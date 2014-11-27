@@ -1,0 +1,102 @@
+<?php
+$event = $this->Js->get('#useropt')->effect('fadeIn');
+$this->Js->get('#usermod')->event('click', $event);
+
+/**
+ *
+ * PHP 5
+ *
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
+ * @package       Cake.View.Layouts
+ * @since         CakePHP(tm) v 0.10.0.1076
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ */
+
+$cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework');
+$temporal = $this->Session->read('Auth.User.nombre');  
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<?php echo $this->Html->charset(); ?>
+    <title>
+		<?php echo 'Observatorio de Aplicaciones UDI' ?>:
+		<?php echo $title_for_layout; ?>
+	</title>
+	<?php
+		echo $this->Html->meta('icon');
+
+		echo $this->Html->css('cake.generic');
+
+		echo $this->fetch('meta');
+		echo $this->fetch('css');
+		echo $this->fetch('script');
+	?>
+<style type="text/css">
+#container #header table tr td {
+	text-align: right;
+}
+body table tr {
+	text-align: right;
+}
+</style>
+</head>
+<body>
+	<table width="100%" border="0" cellpadding="0" cellspacing="0">
+			  <tr>
+			    <?php if(!empty($temporal)) { ?><td width="17" align="left" bgcolor="#C1C1C1"><?php echo $this->Html->link('Inicio', '../'); ?>
+		        </td><?php } ?>
+			    <td width="1110" align="left">&nbsp;</td>
+                <?php if(!empty($temporal)) { ?>
+			    <td width="98" align="right" id ="usermod" style="text-align: right">
+                <ul class='mi-menu'>
+                <li>
+				<?php echo $this->Html->link($this->Session->read('Auth.User.nombre'), array('controller' => 'users', 'action' => 'edit', $this->Session->read('Auth.User.id'))) ?>
+                	<ul><li><table class="mi-menu">
+                	<tr><td>
+                	<?php echo $this->Html->link("Modificar Password", array('controller' => 'users', 'action' => 'cambioc', $this->Session->read('Auth.User.id'))); ?>
+                	</td></tr></table></li>
+                	<li><table class="mi-menu"><tr><td><?php echo $this->Html->link("Modificar Datos", array('controller' => 'users', 'action' => 'edit', $this->Session->read('Auth.User.id'))); ?></td></tr></table></li></ul>
+                </li>
+                </ul>
+				</td>
+                <?php $imagen = $this->Session->read('Auth.User.imagen'); 
+                if(!empty($imagen)) { ?>
+			    <td width="17" align="right" style="text-align: right">
+				<?php echo $this->Html->image('/files/usrpic/'.$this->Session->read('Auth.User.imagen'), array( 'heigth' => '25', 'width' => '25' , 'title' => $this->Session->read('Auth.User.nombre') )); ?></td>
+			    <?php } ?>
+                <td width="17" align="center" bgcolor="#C6DDE1" style="text-align: right; color: #FFF;" onMouseOver= "this.style.background='#BBA6F4'" onMouseOut="this.style.background='#C6DDE1'"><span style="text-align: center"></span>
+				<?php if(!empty($temporal))
+	  			echo $this->Html->link('Salir', array('controller' => 'users', 'action' => 'logout'));	
+	  ?></td><?php } ?>
+	</tr>
+</table><hr>
+		<div id="content">
+		  <table width="100%" border="0" cellpadding="6" cellspacing="0">
+		    <tr>
+		      <?php if(!empty($temporal)) { ?><td width="6%" align="left">
+              	<p><br />
+              	  <br />
+           	    <?php echo $this->Html->link('Usuarios', array('controller' => 'users', 'action' => 'index')); ?><br />
+			  	<?php echo $this->Html->link('OVAs', array('controller' => 'objetos', 'action' => 'index')); ?></p>
+			  </td><?php } ?>
+		      <td width="94%" align="left"><?php echo $this->Session->flash(); ?> <?php echo $this->fetch('content'); ?></td>
+	        </tr>
+	      </table>
+</div>
+		<div id="footer" style="font-size:10px; font-style:normal">
+        			<?php echo $this->Html->link('Hecho en la UDI', 'http://udi.edu.co'); ?>
+		</div>
+	<?php echo $this->element('sql_dump'); ?>
+	<?php echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js');?> 
+	<?php echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js');?>
+	<?php echo $this->Html->script('application.js');?>
+</body>
+</html>
