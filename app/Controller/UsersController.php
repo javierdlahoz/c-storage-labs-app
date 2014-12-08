@@ -18,7 +18,7 @@ class UsersController extends AppController {
 		public function add() 
 		{ //adicionarle la funcionalidad de env�o de correo electr�nico
 			$temp = $this->Session->read('Auth.User.id');
-		if(empty($temp)||($this->Session->read('Auth.User.role')=='admin')) {
+			if(empty($temp)||($this->Session->read('Auth.User.role')=='admin')) {
 	
 			if ($this->request->is('post')) {
 				$resultado = $this->User->find('count', array('conditions'=> array('username' => $this->request->data['User']['username'])));
@@ -29,25 +29,25 @@ class UsersController extends AppController {
 					$this->request->data['User']['password'] = AuthComponent::password($this->request->data['User']['password']);
 				if ($this->User->save($this->request->data)) {
 					
-					$emailTo = $this->request->data['User']['email'];
+					//$emailTo = $this->request->data['User']['email'];
 					
-					if(!empty($emailTo)){
+					// if(!empty($emailTo)){
 						 
-						$email = new CakeEmail();
-						$email->config('smtp');
-						$email->from(array('observatorio@udi.edu.co' => 'Observatorio'));
-						$email->to($emailTo);
-						$email->subject("Creaci�n de cuenta");
-						$texto = "Esto es un mensaje generado autom�ticamente por el observatorio de aplicaciones<br><br>";
-						$texto = $texto."se ha creado su cuenta de usuario de la siguiente manera, <br>
-								username: '".$this->request->data['User']['username']."'<br>Password: '".$originalPassword."'
-							    <br>";
-						$email->sendAs = 'html';
-						$email->emailFormat('html');
-						$email->send($texto);
-						$this->redirect('../../observatorio');
+					// 	$email = new CakeEmail();
+					// 	$email->config('smtp');
+					// 	$email->from(array('observatorio@udi.edu.co' => 'Observatorio'));
+					// 	$email->to($emailTo);
+					// 	$email->subject("Creaci�n de cuenta");
+					// 	$texto = "Esto es un mensaje generado autom�ticamente por el observatorio de aplicaciones<br><br>";
+					// 	$texto = $texto."se ha creado su cuenta de usuario de la siguiente manera, <br>
+					// 			username: '".$this->request->data['User']['username']."'<br>Password: '".$originalPassword."'
+					// 		    <br>";
+					// 	$email->sendAs = 'html';
+					// 	$email->emailFormat('html');
+					// 	$email->send($texto);
+					// 	$this->redirect('../../observatorio');
 						
-					}
+					// }
 					
 					
 					$this->Session->setFlash(__('El usuario ha sido creado exitosamente'));
@@ -84,51 +84,52 @@ class UsersController extends AppController {
 				$this->set('usuarios', $this->User->find('first', array('conditions' => array('id' => $id))));
 				
 				$usuarios = $this->User->find('first', array('conditions' => array('id' => $id)));
+				$usuario = $usuarios['User'];
 				
-				foreach($usuarios as $usuario){
-        			$imagen = $usuario['imagen'];
-       			}
+				$imagen = null;
+				if(isset($usuario['imagen'])){
+					$imagen = $usuario['imagen'];
+				}
+				
+				if (!$this->User->exists()) {
+					throw new NotFoundException(__('Usuario no existente'));
+				}
+				
+				if (!empty($this->data['User']['imagen']['tmp_name'])) {
+				
+					$fileName = $this->generateUniqueFilename($this->data['User']['imagen']['name']);
+					$error = $this->handleFileUpload($this->data['User']['imagen'], $fileName);
+					
+					if (!$error){
+						$this->request->data['User']['imagen'] = $fileName; }
+				}
+				else{
+					$this->request->data['User']['imagen'] = $imagen;
+					}	
 				
 				
-			if (!$this->User->exists()) {
-				throw new NotFoundException(__('Usuario no existente'));
-			}
-			
-			if (!empty($this->data['User']['imagen']['tmp_name'])) {
-			
-				$fileName = $this->generateUniqueFilename($this->data['User']['imagen']['name']);
-				$error = $this->handleFileUpload($this->data['User']['imagen'], $fileName);
-				
-				if (!$error){
-					$this->request->data['User']['imagen'] = $fileName; }
+				if ($this->request->is('post') || $this->request->is('put')) {
+					if (($this->User->save($this->request->data))&&(!$error)) {
+						
+						$this->Session->setFlash(__('El usuario ha sido modificado'));
+						//$this->Session->setFlash(__('La imagen ha sido guardada', true));
+						$this->redirect(array('action' => 'index'));
+					
+					} 
+					else {
+						$this->Session->setFlash(__('Ha habido un problema, intentelo m&aacutes tarde'));
+					
+					}
+				} else {
+					$this->request->data = $this->User->read(null, $id);
+					unset($this->request->data['User']['password']);
+				}
 			}
 			else{
-				$this->request->data['User']['imagen'] = $imagen;
-				}	
-			
-			
-			if ($this->request->is('post') || $this->request->is('put')) {
-				if (($this->User->save($this->request->data))&&(!$error)) {
-					
-					$this->Session->setFlash(__('El usuario ha sido modificado'));
-					//$this->Session->setFlash(__('La imagen ha sido guardada', true));
-					$this->redirect(array('action' => 'index'));
+				//$this->Session->setFlash(__('Usted no posee los privilegios para ingresar en esta p&aacutegina'));
+				$this->redirect(array('action' => 'edit', $this->Session->read('Auth.User.id')));
 				
-				} 
-				else {
-					$this->Session->setFlash(__('Ha habido un problema, intentelo m&aacutes tarde'));
-				
-				}
-			} else {
-				$this->request->data = $this->User->read(null, $id);
-				unset($this->request->data['User']['password']);
 			}
-		}
-		else{
-			$this->Session->setFlash(__('Usted no posee los privilegios para ingresar en esta p&aacutegina'));
-			$this->redirect(array('action' => 'edit', $this->Session->read('Auth.User.id')));
-			
-		}
 		
 		}
 	
@@ -161,7 +162,8 @@ class UsersController extends AppController {
 		public function login() {
 			if ($this->request->is('post')) {
 				if ($this->Auth->login()) {
-					$this->redirect($this->Auth->redirect());
+					$this->Session->write('user', $this->request->data['User']['username']);
+					$this->redirect(array('controller' => 'documentos', 'action' => 'index'));
 				} else {
 					$this->Session->setFlash(__('Nombre de usuario y/o password incorrectos, por favor intente de nuevo'));
 				}
@@ -438,7 +440,7 @@ class UsersController extends AppController {
     				
     			$this->Session->setFlash(__('El usuario ha sido modificado'));
     			//$this->Session->setFlash(__('La imagen ha sido guardada', true));
-    			//$this->redirect(array('action' => 'cambioc'));
+    			$this->redirect(array('action' => 'edit'));
     	
     		}
     		else {

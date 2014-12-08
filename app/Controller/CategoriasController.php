@@ -1,5 +1,6 @@
 <?php
 App::uses('CakeEmail', 'Network/Email');
+App::uses('AuthComponent', 'Controller/Component');
 
 class CategoriasController extends AppController {
 	
@@ -7,104 +8,62 @@ class CategoriasController extends AppController {
 	
 	var $helpers = array('Html', 'Form', 'Time', 'Js' => array('Jquery'));
 	
-		public function view($id = null) {
-			$temp = $this->isAuthorized();
-			if($temp){
-			$this->set('cpadre', $id);
-			$categorias = $this->Categoria->find('first',array('conditions' => array('id'=>$id)));
-			foreach($categorias as $categoria){
-				$nombrec = $categoria['nombre'];
-				$cpadre = $categoria['cpadre'];
-				$id_cat = $categoria['id'];
-			}
-			$this->set('nombre', $nombrec);
-			$this->set('id', $id_cat);
-			$this->set('canterior', $cpadre);
-			$this->set('categorias', $this->Categoria->find('all',
-					array('conditions' => array('cpadre'=>$id))));
+	public function view($id = null) {
+		$this->set('cpadre', $id);
+		$categorias = $this->Categoria->find('first',array('conditions' => array('id'=>$id)));
+		foreach($categorias as $categoria){
+			$nombrec = $categoria['nombre'];
+			$cpadre = $categoria['cpadre'];
+			$id_cat = $categoria['id'];
 		}
-		else{
-			$this->Session->setFlash(__(utf8_encode('El usuario no está registrado o no es administrador')));
-			$this->redirect(array('action' => 'validar'));
-		}
-		}
-	
-		public function add() { 
-			$temp = $this->isAuthorized();
+		$this->set('nombre', $nombrec);
+		$this->set('id', $id_cat);
+		$this->set('canterior', $cpadre);
+		$this->set('categorias', $this->Categoria->find('all',
+			array('conditions' => array('cpadre'=>$id))));
+	}
+
+	public function add() { 
+		if ($this->request->is('post')) {
+			$this->Categoria->create();
 			
-			$admin = $this->Session->read('admin');
-			if($admin != 1)
-				$temp = false;
-			
-			
-			if($temp){	
-			
-			if ($this->request->is('post')) {
-				$this->Categoria->create();
-				
-				if ($this->Categoria->save($this->request->data)) {
-					$this->Session->setFlash(__('La categoria ha sido creada exitosamente'));
-					
-				} 
-				else {
-					$this->Session->setFlash(__('La categoria no ha sido creada'));
-					}
-				}}
+			if ($this->Categoria->save($this->request->data)) {
+				$this->Session->setFlash(__('La categoria ha sido creada exitosamente'));
+				$this->redirect(array('action' => 'index'));
+			} 
 			else {
-				$this->Session->setFlash(__(utf8_encode('El usuario no está registrado o no es administrador')));
-				$this->redirect(array('action' => 'validar'));
+				$this->Session->setFlash(__('La categoria no ha sido creada'));
 			}
 		}
+	}
 		
-		public function addc($id = null) {
-			$temp = $this->isAuthorized();
-			if($temp){
-			$this->set('cpadre', $id);
-			if ($this->request->is('post')) {
-				$this->Categoria->create();
-		
-				if ($this->Categoria->save($this->request->data)) {
-					$this->Session->setFlash(__('La categoria ha sido creada exitosamente'));
-						
-				}
-				else {
-					$this->Session->setFlash(__('La categoria no ha sido creada'));
-				}
-			}
+	public function addc($id = null) 
+	{
+		$this->set('cpadre', $id);
+		if ($this->request->is('post')) {
+			$this->Categoria->create();
+			if ($this->Categoria->save($this->request->data)) {
+				$this->Session->setFlash(__('La categoria ha sido creada exitosamente'));
+				$this->redirect(array('action' => 'view', $id));					
 			}
 			else {
-				$this->Session->setFlash(__(utf8_encode('El usuario no está registrado o no es administrador')));
-				$this->redirect(array('action' => 'validar'));
+				$this->Session->setFlash(__('La categoria no ha sido creada'));
 			}
 		}
+	}
 	
 		
 		//termino de la funciï¿½n de borrado
-		
-		public function beforeFilter() {
-			parent::beforeFilter();
-			//$this->Auth->allow('validar'); // Letting users register themselves
-		}
+	
+	public function beforeFilter() {
+		$this->Auth->allow('index'); // Letting users register themselves
+	}
 		
 	//FUNCIIÓN SEARCH CON EL AUTOCOMPLETE
-			
-			
-		
-			function index(){
-				$temp = $this->isAuthorized();
-				
-				$admin = $this->Session->read('admin');
-				if($admin != 1)
-					$temp = false;
-				
-				if($temp){
-				$this->set('categorias', $this->Categoria->find('all', array('conditions' => array('cpadre'=>'517eb611398dacb818000004'))));
-				}
-				else {
-					$this->Session->setFlash(__(utf8_encode('El usuario no está registrado o no es administrador')));
-					$this->redirect(array('action' => 'validar'));
-				}
-			}	
+	function index(){
+		$categorias = $this->Categoria->find();
+		$this->set('categorias', $categorias);
+	}	
 
     
     function autocomplete() {
@@ -125,96 +84,37 @@ class CategoriasController extends AppController {
 		//FIN DE AUTOCOMPLETE
 		
 	public function edit($id = null){
-		$temp = $this->isAuthorized();
+	
+		$this->Categoria->id = $id;
+		$this->set('categorias', $this->Categoria->find('first', array('conditions' => array('id' => $id))));
+		$categorias = $this->Categoria->find('first', array('conditions' => array('id' => $id)));
 		
-		$admin = $this->Session->read('admin');
-		if($admin != 1)
-			$temp = false;
-		
-		
-		if($temp){				
-				$this->Categoria->id = $id;
-				$this->set('categorias', $this->Categoria->find('first', array('conditions' => array('id' => $id))));
-				$categorias = $this->Categoria->find('first', array('conditions' => array('id' => $id)));
-				
-				foreach($categorias as $categoria){
-					$cpadre = $categoria['cpadre'];
-				}
-				$this->set('cpadre', $cpadre);
-				$this->set('id_cat', $id);
-				
-			if (!$this->Categoria->exists()) {
-				throw new NotFoundException(__('Categoria no existente'));
-			}
+		foreach($categorias as $categoria){
+			$cpadre = $categoria['cpadre'];
+		}
+		$this->set('cpadre', $cpadre);
+		$this->set('id_cat', $id);
 			
-			if ($this->request->is('post') || $this->request->is('put')) {
-				if ($this->Categoria->save($this->request->data)) {
-					$this->Session->setFlash(__('Categoría modificada'));
-					$this->redirect(array('action' => 'index', $cpadre));
-					
-					//$this->Session->setFlash(__('La imagen ha sido guardada', true));
-					//$this->redirect(array('action' => 'index'));
-				
-				} 
-				else {
-					$this->Session->setFlash(__('Ha habido un problema, intentelo más tarde'));
-				
-				}
-			} 
+		if (!$this->Categoria->exists()) {
+			throw new NotFoundException(__('Categoria no existente'));
 		}
 		
-		else {
-			$this->Session->setFlash(__(utf8_encode('El usuario no está registrado o no es administrador')));
-			$this->redirect(array('action' => 'validar'));
-		}
+		if ($this->request->is('post') || $this->request->is('put')) {
+			if ($this->Categoria->save($this->request->data)) {
+				$this->Session->setFlash(__('Categoría modificada'));
+				$this->redirect(array('action' => 'index', $cpadre));
+
+			} 
+			else {
+				$this->Session->setFlash(__('Ha habido un problema, intentelo más tarde'));
+			
+			}
+		} 
+		
 	}
 	
 	function validar(){
-		
-		$dbhost='localhost';
-		$dbusername='root';
-		$dbuserpass='juliana22';
-		$dbname='ceiam';
-		
-		
-		if (!($link=mysql_connect($dbhost,$dbusername,$dbuserpass)))
-		{
-			echo "Error conectando a la base de datos.";
-			exit();
-		}
-		
-		else{
-			$xy = mysql_select_db($dbname,$link) or die(mysql_error());
-	
-			if(!empty($_POST['user'])){
-				
-				$username = $_POST['user'];
-				$password = $_POST['password'];
-				$sql = "SELECT password, administrador FROM usuario WHERE username = '".$username."'";
-				$resultgeneral = mysql_query($sql,$link);
-				$password2 = 0; 
-				$admin = 0;
-				while($row = mysql_fetch_array($resultgeneral)){
-					$password2 = $row[0];
-					$admin = $row[1];
-				}
-				
-			if(($password==$password2)&&(!empty($password2))){			
-				$this->Session->write('user', $username);
-				$this->Session->write('admin', $admin);
-				$this->redirect(array('controller'=>'documentos', 'action' => 'index'));
-				
-			}
-			else{
-				$this->Session->setFlash(__('Las contraseñas no coinciden'));
-				$this->redirect('../');
-			}
-		}
-			else{
-				$this->redirect('../');
-			
-			}
-		}
+
 	}
 	
 	
@@ -235,6 +135,19 @@ class CategoriasController extends AppController {
     		return false;
     		
     	} 
-    	
+    }
+
+    function delete($id = null){
+    	if($id != null){
+    		$categoria = $this->Categoria->find('first', array('conditions' => array('id' => $id)));
+    		$cpadre = $categoria['Categoria']['cpadre'];
+
+    		$this->Categoria->delete($id);
+    		$this->Session->setFlash(__(utf8_encode('Se ha eliminado la categoria')));
+    	}
+    	if(isset($cpadre)){
+    		$this->redirect(array('action' => 'view', $cpadre));	
+    	}
+    	$this->redirect(array('action' => 'index'));
     }
 }

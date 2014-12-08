@@ -15,7 +15,7 @@ function seleccionado(){
 	uploadFile(file);
 }
 
-$(':file-wrapper').drop(function(){
+$('#DocumentoArchivo').change(function(){
     var formData = new FormData($('form')[0]);
     $.ajax({
         url: 'upload.php',  //server script to process data
@@ -28,9 +28,9 @@ $(':file-wrapper').drop(function(){
             return myXhr;
         },
         //Ajax events
-        beforeSend: beforeSendHandler,
-        success: completeHandler,
-        error: errorHandler,
+        //beforeSend: beforeSendHandler,
+        success: seleccionado(),
+        //error: errorHandler,
         // Form data
         data: formData,
         //Options to tell JQuery not to process data or worry about content-type

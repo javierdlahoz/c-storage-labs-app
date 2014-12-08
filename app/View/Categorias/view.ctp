@@ -38,4 +38,4 @@ if($canterior=='517eb611398dacb818000004'){
 <?php } else {?>
 <p>Aun no se han agregado ningun recurso, puede cargar uno 
  <a href = 'cateogiras/add'>aquí</a></p>
-<?php } ?>
+<?php } 

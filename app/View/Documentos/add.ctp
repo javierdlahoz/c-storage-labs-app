@@ -1,4 +1,4 @@
-<?php echo $this->Html->script('fileupload');
+<?php 
 	$opciones = array('si' => 'si',
 				'no' => 'no');
 
@@ -7,8 +7,8 @@
         <?php 
         	 echo $this->Html->link('<< Regresar a la lista', array('controller' => 'documentos', 'action' => 'index', $id_cat)); ?><br><br>
     <?php
-	
-	foreach($propiedades as $propiedad){
+	if(!empty($propiedades)){
+		foreach($propiedades as $propiedad){
 			if($propiedad['tipo']=='boolean'){
 					echo $this->Form->input($propiedad['nombre'], array('type' => 'select',
 					'options' => $opciones));
@@ -16,14 +16,13 @@
 			else{
 					echo $this->Form->input($propiedad['nombre'], array('type' => $propiedad['tipo'], 'required' => true));
 				}
-		}?>
-      <div class="file-wrapper" ondragover="overfile_sign('file-wrapper')" ondragleave="outfile_sign('file-wrapper')"
-       ondrop="outfile_sign('file-wrapper')" id='file-wrapper'>
+		}
+	}	?>
+      <div class="file-wrapper" id='file-wrapper'>
        	<div class="file_sign" id='file_sign'>Arrastra un archivo o haz clic aquí</div>
-       <div class='file'><?php echo $this->Form->input('archivo', array('type' => 'file', 'label' => '', 'onchange' => 'seleccionado()',
-	   'onmouseover' => "overfile_sign('file-wrapper')", 'onmouseout' => "outfile_sign('file-wrapper')")); ?></div>
-       </div>
-       </div>
+       	<input type="file" name="data[Documento][archivo]" id="DocumentoArchivo">
+       	<?php //echo $this->Form->input('archivo', array('type' => 'file')); ?>
+      </div>
        <table><tr><td>
        <div id="nombreArchivo" style="display:none"></div></td></tr></table>
 	  <?php echo $this->Form->input('comentarios', array('type' => 'textarea', 'label' => 'Comentarios/Instrucciones'));   

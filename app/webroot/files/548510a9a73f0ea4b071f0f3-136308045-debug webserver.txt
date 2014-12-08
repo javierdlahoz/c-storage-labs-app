@@ -1,0 +1,56 @@
+
+Peticion 1 del cliente 3G
+
+GET /GestionDispositivos/dispositivos/txrx/GJ@LCILAJEODELDBAD@C@N@B@@BMGJ HTTP/1.1
+.HOST: 172.16.0.200
+.
+.
+.
+.
+.
+.
+.
+
+
+
+Respuesta del servidor 2
+
+HTTP/1.1 200 OK
+.Date: Thu, 20 Mar 2014 11:40:51 GMT
+.Server: Apache/2.4.4 (Win64) PHP/5.4.12
+.X-Powered-By: PHP/5.4.12
+.Set-Cookie: CAKEPHP=tg8bhgl2gkrb8dhif951grpm93; path=/; HttpOnly
+.Content-Length: 187
+.Content-Type: text/html; charset=UTF-8
+.
+.{Mensaje de Retorno}(SQLSTATE[HY000]: General error: 1449 The user specified as a definer ('root'@'%') does not exist)<br>{Mensaje de Entrada recodificado}(7A0C39C1A5F45C4214030E02002D7A)
+
+
+Peticion 2 del cliente 3G
+
+GET /GestionDispositivos/dispositivos/txrx/GJ@LCILAJEODELDBAD@C@N@B@@BMGJ HTTP/1.1
+.HOST: vega1.ingeneo.co
+.
+.
+.
+.
+.
+.
+.
+
+
+Respuesta del servidor 2
+
+HTTP/1.0 200 OK
+.Date: Thu, 20 Mar 2014 11:45:43 GMT
+.Server: Apache/2.2.17 (Win32) mod_ssl/2.2.17 OpenSSL/0.9.8o PHP/5.3.4 mod_perl/2.0.4 Perl/v5.10.1
+.X-Powered-By: PHP/5.3.5
+.Set-Cookie: CAKEPHP=m004s39du5evv8k5pv60q99d45; path=/; HttpOnly
+.Content-Length: 247
+.Content-Type: text/html; charset=UTF-8
+.X-Cache: MISS from localhost
+.X-Cache-Lookup: MISS from localhost:3128
+.Via: 1.0 localhost (squid)
+.Connection: keep-alive
+.
+.{Mensaje de Retorno}(SQLSTATE[42000]: Syntax error or access violation: 1231 Variable 'new' can't be set to the value of 'Variable no definida id:0 o valor de la unidad en nulo')<br>{Mensaje de Entrada recodificado}(7A0C39C1A5F45C4214030E02002D7A) 

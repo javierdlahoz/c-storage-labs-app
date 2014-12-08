@@ -7,7 +7,13 @@
       <legend>Crear Categoria</legend>
         <legend>
         <?php 
-        	 echo $this->Html->link('<< Regresar a la lista', array('controller' => 'categorias', 'action' => 'view', $cpadre)); ?>
+            if(isset($cpadre)){
+        	    echo $this->Html->link('<< Regresar a la lista', array('controller' => 'categorias', 'action' => 'view', $cpadre));
+            }
+            else{
+                echo $this->Html->link('<< Regresar a la lista', array('controller' => 'categorias', 'action' => 'index'));
+            } 
+        ?>
         <br><br></legend>
       <?php
 		echo $this->Form->input('nombre');

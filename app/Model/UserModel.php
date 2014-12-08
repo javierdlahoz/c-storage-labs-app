@@ -1,4 +1,5 @@
 <?php
+
 class User extends AppModel {
 	
 	var $validateFile = array(

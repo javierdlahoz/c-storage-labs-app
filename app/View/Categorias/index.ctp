@@ -13,16 +13,16 @@
     
     <?php foreach ($categorias as $categoria): ?>
     <tr>
-    	<td><?php echo $this->Html->link($categoria['Categoria']['nombre'], 
-    			array('controller' => 'categorias', 'action' => 'view', $categoria['Categoria']['id'])) ; ?></td>
+    	<td><?php echo $this->Html->link($categoria['nombre'], 
+    			array('controller' => 'categorias', 'action' => 'view', $categoria['id'])) ; ?></td>
     	<td width="41" align="center" style="text-align: center"><?php 
 				$imagen = $this->Html->image('edit.png', array('height'=>'16', 'width'=>'16')); 
 				echo $this->Html->link($imagen, 
-    			array('controller' => 'categorias', 'action' => 'edit', $categoria['Categoria']['id']), array('escape'=>false)) ; ?></td>		
+    			array('controller' => 'categorias', 'action' => 'edit', $categoria['id']), array('escape'=>false)) ; ?></td>		
         <td width="45" align="center" style="text-align: center">
         	<center>
         	<?php 
-        	    	echo $this->Html->link('x', array('controller' => 'categorias', 'action' => 'delete', $categoria['Categoria']['id']), array('escape' => false), "Desea continuar?"); ?>
+        	    	echo $this->Html->link('x', array('controller' => 'categorias', 'action' => 'delete', $categoria['id']), array('escape' => false), "Desea continuar?"); ?>
         </center>
         </td>
     </tr>

@@ -45,18 +45,18 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 body table tr {
 	text-align: right;
 }
-</style>
+</style> 
 </head>
 <body>
 	<table width="101%" border="0" cellpadding="0" cellspacing="0">
 			  <tr>
-			   <td width="17" align="left" bgcolor="#FFFFFF"><?php echo $this->Html->link('Inicio', '../'); ?>
+			   <td width="17" align="left" bgcolor="#FFFFFF">
 		        <?php $temp = $this->Session->read('user');
-    			if(!empty($temp)){ ?>
-		         | <?php 
-			 	echo $this->Html->link('Configuración de correo', array('controller' => 'configuracions', 'action' =>'mail')); ?> | <?php 
-			 	echo $this->Html->link('Cerrar sesión', array('controller' => 'categorias', 'action' =>'logout')); } ?></td>
-			    <?php $imagen = $this->Session->read('Auth.User.imagen'); 
+    			if(!empty($temp)){ 
+    				echo $this->Html->link('Editar perfil', array('controller' => 'users', 'action' =>'edit')); ?> | <?php 
+				 	echo $this->Html->link('Configuración de correo', array('controller' => 'configuracions', 'action' =>'mail')); ?> | <?php 
+				 	echo $this->Html->link('Cerrar sesión', array('controller' => 'categorias', 'action' =>'logout')); } ?></td>
+				    <?php $imagen = $this->Session->read('Auth.User.imagen'); 
                 if(!empty($imagen)) { ?>
 			    <?php } ?>
       </tr>
@@ -83,9 +83,9 @@ body table tr {
 		<div id="footer" style="font-size:10px; font-style:normal">
         			<?php echo $this->Html->link('Hecho en la UIS', 'http://uis.edu.co', array('target' => '_new')); ?>
 		</div>
-	<?php echo $this->element('sql_dump'); ?>
-	<?php echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js');?> 
+	<?php echo $this->Html->script('jquery-1.4.2.min.js'); ?>
 	<?php echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js');?>
 	<?php echo $this->Html->script('application.js');?>
+	<?php echo $this->Html->script('fileupload.js');?>
 </body>
 </html>

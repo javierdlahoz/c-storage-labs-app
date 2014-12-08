@@ -43,7 +43,8 @@
 <?php 		if(!empty($mensaje)){
 				echo "<br><h3>".$mensaje."</h3>";
 			} 
-			?>
+  if(!empty($carpetas) || !empty($objetos)):
+?>
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
   <tr>
 		<th></th>
@@ -65,14 +66,15 @@
         </td>
     </tr>
     <?php endforeach; 
-	   
-  foreach($objetos as $objeto):
-  	if(!empty($objeto['documentos']))
-		{
-			if(empty($documentos))
-				$documentos = $objeto['documentos'];
-		}
-  endforeach;
+    if(!empty($objetos)):
+      foreach($objetos as $objeto):
+      	if(!empty($objeto['documentos']))
+    		{
+    			if(empty($documentos))
+    				$documentos = $objeto['documentos'];
+    		}
+      endforeach;
+    endif;
   
   if(!empty($documentos)) {
 	 foreach ($documentos as $documento){
@@ -108,12 +110,14 @@
 			if(!empty($documento['Nombre']))
 				echo $documento['Nombre']; ?>
         </td>
-        <td width="17" valign="middle" style="font-size: 11px"><?php if($admin==1) { echo $this->Html->image('edit.png', array('height'=>'12', 'width'=>'12'
+        <td width="17" valign="middle" style="font-size: 11px"><?php echo $this->Html->image('edit.png', array('height'=>'12', 'width'=>'12'
 		, 'url' => array('controller' => 'documentos', 'action' => 'edit', $documento['id'])
-		)); } ?></td>
-        <td width="19" align="center" valign="middle" style="font-size: 10px"><?php if($admin==1) { echo $this->Html->link('x', array('controller' => 'documentos',
-		'action' => 'delete', $documento['id']), array('escape' => false), "¿Desea continuar?" );  }?></td>
+		));  ?></td>
+        <td width="19" align="center" valign="middle" style="font-size: 10px"><?php echo $this->Html->link('x', array('controller' => 'documentos',
+		'action' => 'delete', $documento['id']), array('escape' => false), "¿Desea continuar?" );  ?></td>
     </tr>
     <?php } ?>
 </table>
-<?php } ?>
+<?php
+   }
+endif;

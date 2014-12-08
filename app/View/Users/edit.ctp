@@ -13,10 +13,14 @@
     <center>
     <?php 
     foreach($usuarios as $usuario){
-        	$imagen = $usuario['imagen'];
-        	$nombre = $usuario['nombre'];
+    	if(isset($usuario['imagen'])){
+            $imagen = $usuario['imagen'];    
+        }
+    	$nombre = $usuario['nombre'];
 	}
-    echo $this->Html->image('/files/usrpic/'.$imagen, array( 'width' => '256', 'title' =>  $nombre));
+    if(isset($usuario['imagen'])){
+        echo $this->Html->image('/files/usrpic/'.$imagen, array( 'width' => '256', 'title' =>  $nombre));
+    }
     ?></center></fieldset>
    <?php echo $this->Form->end('Modificar');?>
    <?php echo $this->Html->link("Cambiar Password", array('controller' => 'users', 'action' => 'cambioc', $this->Session->read('Auth.User.id'))); ?></div>

@@ -82,119 +82,113 @@ class DocumentosController extends AppController {
 
 	}
 
-	public function add($id_cat = null) {
+	public function add($id_cat = null)
+	{
 		$this->Session->write('id', $id_cat);
-		$tempuser = $this->isAuthorized();
 		
-		$admin = $this->Session->read('admin');
-		if($admin != 1)
-			$tempuser = false;
+		$this->set('id_cat', $id_cat);
+		$idarchivo = String::uuid();
+		$i=0;
+		$usuarios = $this->usuarios();
+		$this->set('usuarios', $usuarios);
 
+		$categorias = $this->Categoria->find('first', array('conditions'=>array('id'=>$id_cat)));
+		$propiedades = null;
 
-		if($tempuser){
-			$this->set('id_cat', $id_cat);
-			$idarchivo = String::uuid();
-			$i=0;
-			$usuarios = $this->usuarios();
-			$this->set('usuarios', $usuarios);
-
-			$categorias = $this->Categoria->find('first', array('conditions'=>array('id'=>$id_cat)));
+		if(!empty($categorias)){
 			foreach($categorias as $categoria){
 				$nombre_cat = $categoria['nombre'];
 			}
-			while(!empty($categorias)){
-				foreach($categorias as $categoria){
+		}
 
-					if(!empty($categorias['Categoria']['cpadre']))
-						$id=$categorias['Categoria']['cpadre'];
+		while(!empty($categorias)){
+			foreach($categorias as $categoria){
 
-					if(!empty($categorias['Categoria']['propiedades'])){
-						$propiedades1 = $categorias['Categoria']['propiedades'];
-						foreach($propiedades1 as $propiedades2){
-							$propiedades[$i] = $propiedades2;
-							$i++;
-						}
+				if(!empty($categorias['Categoria']['cpadre']))
+					$id=$categorias['Categoria']['cpadre'];
+
+				if(!empty($categorias['Categoria']['propiedades'])){
+					$propiedades1 = $categorias['Categoria']['propiedades'];
+					foreach($propiedades1 as $propiedades2){
+						$propiedades[$i] = $propiedades2;
+						$i++;
 					}
 				}
-				if(!empty($id))
+			}
+			if(!empty($id))
+			{
+				$categorias = $this->Categoria->find('first', array('conditions'=>array('id'=>$id)));
+				if($id=='517eb611398dacb818000004')
+					$id=null;
+			}
+			else
+				$categorias = null;
+		}
+		$this->set('propiedades', $propiedades);
+
+		if ($this->request->is('post')) 
+		{
+			$nombre_doc = $this->data['Documento']['archivo']['name'];
+			$id_doc = $this->request->data['Documento']['id_categoria'].'-'.rand();
+			$path = empty($path) ? WWW_ROOT.'files/'.$id_doc.'-'.$this->data['Documento']['archivo']['name'] : $path;
+			$path2 = $path;
+			$path = "/files/".$id_doc.'-'.$this->data['Documento']['archivo']['name'];
+			move_uploaded_file($this->data['Documento']['archivo']['tmp_name'], $path2);
+			$id_categoria = $this->request->data['Documento']['id_categoria'];
+			$array_campos = array('id' => $id_doc);
+
+			for($j=0; $j<=$i-1; $j++){
+				$nombre_input = $propiedades[$j]['nombre'];
+				$array_campos[$propiedades[$j]['nombre']] = $this->request->data['Documento'][$nombre_input];
+			}
+				
+			//inclusion de usuarios//
+			$array_usuarios = array();
+			$u=0;
+				
+			foreach($usuarios as $usuario){
+				if($this->request->data['Documento'][$usuario['username']]==1)
 				{
-					$categorias = $this->Categoria->find('first', array('conditions'=>array('id'=>$id)));
-					if($id=='517eb611398dacb818000004')
-						$id=null;
-				}
-				else
-					$categorias = null;
-			}
-			$this->set('propiedades', $propiedades);
-
-			if ($this->request->is('post')) {
-				$nombre_doc = $this->data['Documento']['archivo']['name'];
-				$id_doc = $this->request->data['Documento']['id_categoria'].'-'.rand();
-				$path = empty($path) ? WWW_ROOT.'files/'.$id_doc.'-'.$this->data['Documento']['archivo']['name'] : $path;
-				$path2 = $path;
-				$path = "/files/".$id_doc.'-'.$this->data['Documento']['archivo']['name'];
-				move_uploaded_file($this->data['Documento']['archivo']['tmp_name'], $path2);
-				$id_categoria = $this->request->data['Documento']['id_categoria'];
-				$array_campos = array('id' => $id_doc);
-
-				for($j=0; $j<=$i-1; $j++){
-					$nombre_input = $propiedades[$j]['nombre'];
-					$array_campos[$propiedades[$j]['nombre']] = $this->request->data['Documento'][$nombre_input];
-				}
-					
-				//inclusion de usuarios//
-				$array_usuarios = array();
-				$u=0;
-					
-				foreach($usuarios as $usuario){
-					if($this->request->data['Documento'][$usuario['username']]==1)
-					{
-						$array_usuarios[$u]['username']=$usuario['username'];
-						$u++;
-					}
-				}
-					
-				$this->request->data['Documento']['archivo']['url'] = $path;
-				$array_campos['usuarios']=$array_usuarios;
-				$array_campos['archivo'] = $this->request->data['Documento']['archivo'];
-				$array_campos['comentarios'] = $this->request->data['Documento']['comentarios'];
-
-
-				if($this->Categoria->save(array('id' => $id_categoria,'$push' => array('documentos' =>
-						$array_campos)))){
-					//$this->redirect(array('controller'=>'documentos', 'action' => 'index', $id));
-
-
-					/*$configs = $this->Configuracion->find('first', array('conditions'=>array('id'=>'001')));
-					 foreach($configs as $config){
-					$mail_calidad = $config['correo_calidad'];
-					}
-					$email = new CakeEmail();
-					$email->config('smtp');
-					$email->from(array('ceiam@uis.edu.co' => 'CEIAM - Documental'));
-					$email->to($mail_calidad);
-					$email->subject("Manejo de archivos");
-					$texto = 'Se ha añadido un nuevo archivo a la carpeta '.$nombre_cat.', el cual tiene por nombre
-					de archivo '.$nombre_doc.'<br><br>Este archivo ha sido añadido por <strong>'.
-					$this->Session->read('user').'</strong>';
-
-					$email->sendAs = 'html';
-					$email->emailFormat('html');
-					$email->send($texto); */
-					$this->Session->setFlash(__('El documento ha sido cargado exitosamente'));
-					$this->redirect(array('controller'=>'documentos',  'action'=>'index', $id_cat));
-				}
-
-				else {
-					$this->Session->setFlash(__('El documento no ha podido cargarse'));
+					$array_usuarios[$u]['username']=$usuario['username'];
+					$u++;
 				}
 			}
-		}
-		else {
-			$this->Session->setFlash(__(utf8_encode('El usuario no está registrado o no tiene permisos para ingresar a esta sección')));
-			$this->redirect(array('controller' => 'categorias', 'action' => 'validar'));
-		}
+				
+			$this->request->data['Documento']['archivo']['url'] = $path;
+			$array_campos['usuarios']=$array_usuarios;
+			$array_campos['archivo'] = $this->request->data['Documento']['archivo'];
+			$array_campos['comentarios'] = $this->request->data['Documento']['comentarios'];
 
+
+			if($this->Categoria->save(array('id' => $id_categoria,'$push' => array('documentos' =>
+					$array_campos)))){
+				//$this->redirect(array('controller'=>'documentos', 'action' => 'index', $id));
+
+
+				/*$configs = $this->Configuracion->find('first', array('conditions'=>array('id'=>'001')));
+				 foreach($configs as $config){
+				$mail_calidad = $config['correo_calidad'];
+				}
+				$email = new CakeEmail();
+				$email->config('smtp');
+				$email->from(array('ceiam@uis.edu.co' => 'CEIAM - Documental'));
+				$email->to($mail_calidad);
+				$email->subject("Manejo de archivos");
+				$texto = 'Se ha añadido un nuevo archivo a la carpeta '.$nombre_cat.', el cual tiene por nombre
+				de archivo '.$nombre_doc.'<br><br>Este archivo ha sido añadido por <strong>'.
+				$this->Session->read('user').'</strong>';
+
+				$email->sendAs = 'html';
+				$email->emailFormat('html');
+				$email->send($texto); */
+				$this->Session->setFlash(__('El documento ha sido cargado exitosamente'));
+				$this->redirect(array('controller'=>'documentos',  'action'=>'index', $id_cat));
+			}
+
+			else {
+				$this->Session->setFlash(__('El documento no ha podido cargarse'));
+			}
+		}
 	}
 
 
@@ -202,177 +196,175 @@ class DocumentosController extends AppController {
 
 	public function beforeFilter() {
 		//	parent::beforeFilter();
-		//	$this->Auth->allow('add', 'restaurar', 'login', 'logout'); // Letting users register themselves
+		$this->Auth->allow('index');
 	}
 
-	function index($id_cat = null){
+	function index($id_cat = null)
+	{
 		$this->Session->write('id', $id_cat);
-		$admin = $this->Session->read('admin');
+		
+		if ( $this->RequestHandler->isAjax() ) {
 
-		$tempuser = $this->isAuthorized();
-		if($tempuser){
+			Configure::write ( 'debug', 0 );
+			$this->autoRender=false;
+			$objetos=$this->Categoria->find('all', array('conditions' => array('$or' =>  array(
+					array("documentos.Titulo" => array('$regex' => new MongoRegex('/.*'.$_GET['term'].'*./i'))),
+					array("documentos.archivo.name" => array('$regex' => new MongoRegex('/.*'.$_GET['term'].'*./i')))
+			))));
+			$i=0;
+			$response[$i]['value']= $_GET['term'];
+			$response[$i]['label']= "No se encontraron resultados";
 
-			$this->set('admin', $admin);
-			if ( $this->RequestHandler->isAjax() ) {
-
-				Configure::write ( 'debug', 0 );
-				$this->autoRender=false;
-				$objetos=$this->Categoria->find('all', array('conditions' => array('$or' =>  array(
-						array("documentos.Titulo" => array('$regex' => new MongoRegex('/.*'.$_GET['term'].'*./i'))),
-						array("documentos.archivo.name" => array('$regex' => new MongoRegex('/.*'.$_GET['term'].'*./i')))
-				))));
-				$i=0;
-				$response[$i]['value']= $_GET['term'];
-				$response[$i]['label']= "No se encontraron resultados";
-
-				foreach($objetos as $objeto):
-					
-				if(!empty($objeto['documentos']))
-				{
-					if(empty($documentos))
-						$documentos = $objeto['documentos'];
-				}
-					
-
-				$documentos = array();
-				if(!empty($objeto['Categoria']['documentos'])){
-					foreach ($objeto['Categoria']['documentos'] as $documento){
-
-						if((stripos($documento['Titulo'], $_GET['term'])!==false)||(stripos($documento['archivo']['name'], $_GET['term'])!==false)){
-							{
-								array_push($documentos, $documento);
-							}
-						}
-					}
-				}
-					
-				if(!empty($documentos)) {
-						
-					foreach ($documentos as $documento){
-						if (empty($id_cat))
-							$puntos = null;
-						else
-							$puntos = "../../";
-
-						$img = "<img src='".$puntos."img/file.png' height='36'>";
-						if(strpos($documento['archivo']['type'], 'word')){
-							$img = "<img src='".$puntos."img/docs.png' height='36'>";
-						}
-						if(strpos($documento['archivo']['type'], 'sheet')){
-							$img = "<img src='".$puntos."img/xls.png' height='36'>";
-						}
-						if(strpos($documento['archivo']['type'], 'presentation')){
-							$img = "<img src='".$puntos."img/ppt.png' height='36'>";
-						}
-						if(strpos($documento['archivo']['type'], 'pdf')){
-							$img = "<img src='".$puntos."img/pdf.png' height='36'>";
-						}
-						if(strpos($documento['archivo']['type'], 'mage')){
-							$img = "<img src='".$puntos.$documento['archivo']['url']."' height='36'>";
-						}
-
-
-
-						$response[$i]['value']=$documento['Titulo'];
-						$response[$i]['label']= "<table border='0' cellpadding='0' cellspacing='0'>
-								<tr onclick = \"window.location='/laboratorios/documentos/view/".$documento['id']."'\">
-										<td align='center' width='36'>".$img."</td>
-												<td align='left' valign='middle'>".$documento['Titulo']."
-														<br><div style='font-size: 11px; color: #777;'>".$documento['archivo']['name']."<br>
-																".number_format($documento['archivo']['size']/1024,2)." KB
-																		</div>
-																		</td></tr></table>";
-						$i++;
-					}
-
-				}
-				endforeach;
-
-				echo json_encode($response);
+			foreach($objetos as $objeto):
+				
+			if(!empty($objeto['documentos']))
+			{
+				if(empty($documentos))
+					$documentos = $objeto['documentos'];
 			}
+				
 
-			if($id_cat==null){
-				$id_cat = '517eb611398dacb818000004';
-				$cpadre[0] = $this->Categoria->find('first', array('conditions' => array('id'=>$id_cat)));
+			$documentos = array();
+			if(!empty($objeto['Categoria']['documentos'])){
+				foreach ($objeto['Categoria']['documentos'] as $documento){
+
+					if((stripos($documento['Titulo'], $_GET['term'])!==false)||(stripos($documento['archivo']['name'], $_GET['term'])!==false)){
+						{
+							array_push($documentos, $documento);
+						}
+					}
+				}
+			}
+				
+			if(!empty($documentos)) {
+					
+				foreach ($documentos as $documento){
+					if (empty($id_cat))
+						$puntos = null;
+					else
+						$puntos = "../../";
+
+					$img = "<img src='".$puntos."img/file.png' height='36'>";
+					if(strpos($documento['archivo']['type'], 'word')){
+						$img = "<img src='".$puntos."img/docs.png' height='36'>";
+					}
+					if(strpos($documento['archivo']['type'], 'sheet')){
+						$img = "<img src='".$puntos."img/xls.png' height='36'>";
+					}
+					if(strpos($documento['archivo']['type'], 'presentation')){
+						$img = "<img src='".$puntos."img/ppt.png' height='36'>";
+					}
+					if(strpos($documento['archivo']['type'], 'pdf')){
+						$img = "<img src='".$puntos."img/pdf.png' height='36'>";
+					}
+					if(strpos($documento['archivo']['type'], 'mage')){
+						$img = "<img src='".$puntos.$documento['archivo']['url']."' height='36'>";
+					}
+
+
+
+					$response[$i]['value']=$documento['Titulo'];
+					$response[$i]['label']= "<table border='0' cellpadding='0' cellspacing='0'>
+							<tr onclick = \"window.location='/laboratorios/documentos/view/".$documento['id']."'\">
+									<td align='center' width='36'>".$img."</td>
+											<td align='left' valign='middle'>".$documento['Titulo']."
+													<br><div style='font-size: 11px; color: #777;'>".$documento['archivo']['name']."<br>
+															".number_format($documento['archivo']['size']/1024,2)." KB
+																	</div>
+																	</td></tr></table>";
+					$i++;
+				}
+
+			}
+			endforeach;
+
+			echo json_encode($response);
+		}
+
+		if($id_cat==null){
+			$id_cat = '517eb611398dacb818000004';
+			$cpadre[0] = $this->Categoria->find('first', array('conditions' => array('id'=>$id_cat)));
+			if(!empty($cpadre[0])){
 				foreach($cpadre[0] as $cpadres){
 					$id_catN = $cpadres['id'];
 				}
-				$this->set('objetos', $cpadre[0]);
-				$this->set('id_cat', $id_cat);
 			}
-			else
-			{
-				$i=0;
-				$cpadre[0] = $this->Categoria->find('first', array('conditions' => array('id'=>$id_cat)));
-				foreach($cpadre[$i] as $cpadres){
-					$id_catN = $cpadres['id'];
-				}
-				$this->set('objetos', $cpadre[0]);
-				$this->set('id_cat', $id_cat);
+			$this->set('objetos', $cpadre[0]);
+			$this->set('id_cat', $id_cat);
+		}
+		else
+		{
+			$i=0;
+			$cpadre[0] = $this->Categoria->find('first', array('conditions' => array('id'=>$id_cat)));
+			foreach($cpadre[$i] as $cpadres){
+				$id_catN = $cpadres['id'];
+			}
+			$this->set('objetos', $cpadre[0]);
+			$this->set('id_cat', $id_cat);
 
-				while($id_catN != '517eb611398dacb818000004')
-				{
+			while(empty($cpadre[$i]))
+			{	
+				if(!empty($cpadre[$i])){
 					foreach($cpadre[$i] as $cpadres){
 						$cpadreNext = $cpadres['cpadre'];
-
 					}
-					$i++;
-					$cpadre[$i] = $this->Categoria->find('first', array('conditions' => array('id'=>$cpadreNext)));
+				}
+
+				$i++;
+				$cpadre[$i] = $this->Categoria->find('first', array('conditions' => array('id'=>$cpadreNext)));
+				if(!empty($cpadre[$i])){
 					foreach($cpadre[$i] as $cpadres){
 						$id_catN = $cpadres['id'];
 					}
 				}
-				$this->set('cpadres', $cpadre);
 			}
-				
-			$this->set('carpetas', $this->Categoria->find('all', array('conditions' =>
-					array('cpadre' => $id_cat),
-					'order' => array('Categoria.nombre' => 'ASC')
-			)));
-				
+			$this->set('cpadres', $cpadre);
+		}
+			
+		$this->set('carpetas', $this->Categoria->find('all', array('conditions' =>
+				array('cpadre' => $id_cat),
+				'order' => array('Categoria.nombre' => 'ASC')
+		)));
+			
 
-			if (!$this->RequestHandler->isAjax()) {
-				if (!empty($this->data)) {
-					$this->Categoria->recursive = 0;
+		if (!$this->RequestHandler->isAjax()) {
+			if (!empty($this->data)) {
+				$this->Categoria->recursive = 0;
 
-					if(!empty($this->request->data['Documento']['nombreDocumentos']))
-						$objetos  = $this->Categoria->find('all', array('conditions' => array('$or' =>  array(
-									
-								array("documentos.Titulo" => array('$regex' => new MongoRegex('/.*'.$this->request->data['Documento']['nombreDocumentos'].'*./i'))),
-								array("documentos.archivo.name" => array('$regex' => new MongoRegex('/.*'.$this->request->data['Documento']['nombreDocumentos'].'*./i')))
-						))));
-					$this->set('mensaje', "En una de las siguientes carpetas puedes encontrar el documento
-							que buscas");
-					$documentos = array();
+				if(!empty($this->request->data['Documento']['nombreDocumentos']))
+					$objetos  = $this->Categoria->find('all', array('conditions' => array('$or' =>  array(
+								
+							array("documentos.Titulo" => array('$regex' => new MongoRegex('/.*'.$this->request->data['Documento']['nombreDocumentos'].'*./i'))),
+							array("documentos.archivo.name" => array('$regex' => new MongoRegex('/.*'.$this->request->data['Documento']['nombreDocumentos'].'*./i')))
+					))));
+				$this->set('mensaje', "En una de las siguientes carpetas puedes encontrar el documento
+						que buscas");
+				$documentos = array();
 
-					foreach($objetos as $objeto){
+				foreach($objetos as $objeto){
 
-						if(!empty($objeto['Categoria']['documentos'])){
-							foreach ($objeto['Categoria']['documentos'] as $documento){
+					if(!empty($objeto['Categoria']['documentos'])){
+						foreach ($objeto['Categoria']['documentos'] as $documento){
 
-								if((stripos($documento['Titulo'], $this->request->data['Documento']['nombreDocumentos'])!==false)
-										||(stripos($documento['archivo']['name'], $this->request->data['Documento']['nombreDocumentos'])!==false)){
-									{
-										//array_merge($documentos, $documento);
-										array_push($documentos, $documento);
-									}
+							if((stripos($documento['Titulo'], $this->request->data['Documento']['nombreDocumentos'])!==false)
+									||(stripos($documento['archivo']['name'], $this->request->data['Documento']['nombreDocumentos'])!==false)){
+								{
+									//array_merge($documentos, $documento);
+									array_push($documentos, $documento);
 								}
 							}
 						}
 					}
-						
-					$this->set('objetos', $objetos);
-					$this->set('documentos',  $documentos);
-					$this->set('carpetas', $objetos);
-
 				}
 					
+				$this->set('objetos', $objetos);
+				$this->set('documentos',  $documentos);
+				$this->set('carpetas', $objetos);
+
 			}
+				
 		}
-		else {
-			$this->Session->setFlash(__(utf8_encode('El usuario no está registrado o no tiene permisos para ingresar a esta sección')));
-			$this->redirect(array('controller' => 'categorias', 'action' => 'validar'));
-		}
+		
 	}
 
 
@@ -607,31 +599,4 @@ class DocumentosController extends AppController {
 		 
 	}
 
-	function usuarios(){
-		$dbhost='localhost';
-		$dbusername='root';
-		$dbuserpass='juliana22';
-		$dbname='ceiam';
-		 
-		 
-		if (!($link=mysql_connect($dbhost,$dbusername,$dbuserpass)))
-		{
-			echo "Error conectando a la base de datos.";
-			exit();
-		}
-		 
-		else{
-			$xy = mysql_select_db($dbname,$link) or die(mysql_error());
-			$sql = "SELECT username, Nombre, Apellido FROM usuario";
-			$resultset = mysql_query($sql,$link);
-			$i=0;
-			while($row=mysql_fetch_array($resultset)){
-				$usuarios[$i]['username'] = $row[0];
-				$usuarios[$i]['nombre'] = $row[1]." ".$row[2];
-				$i++;
-			}
-		}
-		return $usuarios;
-		 
-	}
 }

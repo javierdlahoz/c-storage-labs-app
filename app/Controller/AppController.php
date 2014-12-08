@@ -32,23 +32,37 @@ App::uses('Controller', 'Controller');
  * @link http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
-public $components = array(
+    
+    public $uses = array('User');
+
+    public $components = array(
         'Session'
-		/*,
+		,
         'Auth' => array(
-            'loginRedirect'  => array('controller' => 'posts', 'action' => 'index'),
-            'logoutRedirect' => array('controller' => 'pages', 'action' => 'display', 'home'),
-            'authorize'      => 'Controller'
-        )*/
+            'loginAction' => array(
+                'controller' => 'users',
+                'action' => 'login'
+            ),
+            'loginRedirect'  => array('controller' => 'documentos', 'action' => 'index'),
+            'logoutRedirect' => array('controller' => 'users', 'action' => 'login', 'home'),
+            'authError' => 'No estás permitido para entrar aquí',
+            //'authorize'      => 'Controller'
+        )
     );
 
     public function beforeFilter() {
-        //$this->Auth->allow('login', 'logout');
-    	//$this->Auth->authorize = array('Controller');
+        $this->Auth->allow('login', 'logout');
+    	// $this->Auth->authorize = array('Controller');
     }
     
     public function isAuthorized() {
     	return true;
+    }
+
+    public function usuarios(){
+        //$this->User = new User();
+        $usuarios = $this->User->find();
+        return $usuarios;
     }
     
 }

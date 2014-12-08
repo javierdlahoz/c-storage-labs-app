@@ -20,6 +20,7 @@
  */
 
 App::uses('AppController', 'Controller');
+App::uses('AuthComponent', 'Controller/Component');
 
 /**
  * Static content controller
@@ -53,7 +54,7 @@ class PagesController extends AppController {
  */
 	public function display() {
 		$path = func_get_args();
-		$this->set('usuario', $this->Session->read('user'));
+		$this->set('user', $this->Session->read('user'));
 
 		$count = count($path);
 		if (!$count) {
