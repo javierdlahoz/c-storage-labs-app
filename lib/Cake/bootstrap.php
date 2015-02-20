@@ -119,14 +119,14 @@ if (!defined('IMAGES_URL')) {
  * Web path to the CSS files directory.
  */
 if (!defined('CSS_URL')) {
-	define('CSS_URL', 'css/');
+	define('CSS_URL', 'uikit/css/');
 }
 
 /**
  * Web path to the js files directory.
  */
 if (!defined('JS_URL')) {
-	define('JS_URL', 'js/');
+	define('JS_URL', 'uikit/js/');
 }
 
 

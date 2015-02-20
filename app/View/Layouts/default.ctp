@@ -1,4 +1,5 @@
 <?php
+
 $event = $this->Js->get('#useropt')->effect('fadeIn');
 $this->Js->get('#usermod')->event('click', $event);
 
@@ -21,71 +22,181 @@ $this->Js->get('#usermod')->event('click', $event);
 
 $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework');
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+<!DOCTYPE html>
+<html lang="es">
+    <head>
 	<?php echo $this->Html->charset(); ?>
-    <title>
-		<?php echo 'Gestión documental' ?>:
-		<?php echo $title_for_layout; ?>
-	</title>
+        <title><?php echo 'Gestión documental' ?> | <?php echo $title_for_layout; ?></title>
 	<?php
-		echo $this->Html->meta('icon');
+        echo $this->Html->meta('icon');
+        echo $this->Html->css('uikit.almost-flat.min.css');
+        //echo $this->Html->css('https://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css');
 
-		echo $this->Html->css('cake.generic');
-
-		echo $this->fetch('meta');
-		echo $this->fetch('css');
-		echo $this->fetch('script');
+        echo $this->fetch('meta');
+        echo $this->fetch('css');
+        echo $this->fetch('script');
 	?>
-<style type="text/css">
-#container #header table tr td {
-	text-align: right;
-}
-body table tr {
-	text-align: right;
-}
-</style> 
-</head>
-<body>
-	<table width="101%" border="0" cellpadding="0" cellspacing="0">
-			  <tr>
-			   <td width="17" align="left" bgcolor="#FFFFFF">
-		        <?php $temp = $this->Session->read('user');
-    			if(!empty($temp)){ 
-    				echo $this->Html->link('Editar perfil', array('controller' => 'users', 'action' =>'edit')); ?> | <?php 
-				 	echo $this->Html->link('Configuración de correo', array('controller' => 'configuracions', 'action' =>'mail')); ?> | <?php 
-				 	echo $this->Html->link('Cerrar sesión', array('controller' => 'categorias', 'action' =>'logout')); } ?></td>
-				    <?php $imagen = $this->Session->read('Auth.User.imagen'); 
-                if(!empty($imagen)) { ?>
-			    <?php } ?>
-      </tr>
-</table><hr>
-		<div id="content">
-		  <table width="100%" border="0" cellpadding="6" cellspacing="0" height="95%">
-		    <tr>
-		      <td width="112"><h3>Menú</h3>
-		       <br />
-               <nav id="vmenu" class="slideRight">
-                	<ul><li>
-		            <?php echo $this->Html->link('Categorías', array('controller' => 'categorias', 'action' => 'index')); ?></li>
+    </head>
+    <body>
+        <div class="uk-container uk-container-center uk-margin-top uk-margin-large-bottom">
+            <nav class="uk-navbar uk-margin-large-bottom">
+                <a href="/" class="uk-navbar-brand uk-hidden-small">Labs</a>
+                <ul class="uk-navbar-nav uk-hidden-small">
                     <li>
-                    <?php echo $this->Html->link('Documentos', array('controller' => 'documentos', 'action' => 'index')); ?>
+                    <?php 
+                        echo $this->Html->link('CATEGORÍAS', 
+                            array(
+                                'controller' => 'categorias', 
+                                'action'     => 'index'
+                            )
+                        ); 
+                    ?>
                     </li>
-                	</ul>
-           		</nav>
-	             	</td>
-	            <td width="2" style="border-left:solid; border-left-color:#ddd; border-left-width:thin">&nbsp;</td>
-		      <td width="948" height="90%" align="left"><?php echo $this->Session->flash(); ?> <?php echo $this->fetch('content'); ?></td>
-	        </tr>
-	      </table>
-</div>
-		<div id="footer" style="font-size:10px; font-style:normal">
-        			<?php echo $this->Html->link('Hecho en la UIS', 'http://uis.edu.co', array('target' => '_new')); ?>
-		</div>
-	<?php echo $this->Html->script('jquery-1.4.2.min.js'); ?>
-	<?php echo $this->Html->script('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js');?>
-	<?php echo $this->Html->script('application.js');?>
-	<?php echo $this->Html->script('fileupload.js');?>
-</body>
+                    <li>
+                        <?php 
+                        echo $this->Html->link('DOCUMENTOS', 
+                            array(
+                                'controller' => 'documentos', 
+                                'action' => 'index'
+                            )
+                        ); 
+                        ?>
+                    </li>
+                    <?php 
+                    $temp = $this->Session->read('user');
+                    if( !empty($temp) ):
+                    ?>
+                    <li data-uk-dropdown="" class="uk-parent">
+                        <a href=""><i class="uk-icon-user"></i>
+                            <?php echo $this->Session->read('Auth.User.user'); ?>
+                            <i class="uk-icon-caret-down"></i>
+                        </a>
+                        <div class="uk-dropdown uk-dropdown-navbar" style="">
+                            <ul class="uk-nav uk-nav-navbar">
+                                <li>
+                                <?php 
+                                echo $this->Html->link('Editar perfil', 
+                                    array(
+                                        'controller' => 'users', 
+                                        'action' =>'edit'
+                                    )
+                                );
+                                ?>
+                                </li>
+                                <li>
+                                <?php 
+                                echo $this->Html->link('Configuración de correo', 
+                                    array(
+                                        'controller' => 'configuraciones', 
+                                        'action' =>'mail'
+                                    )
+                                ); 
+                                ?>
+                                </li>
+                                <li class="uk-nav-divider"></li>
+                                <li>
+                                <?php 
+                                echo $this->Html->link('Cerrar sesión', 
+                                    array(
+                                        'controller' => 'categorias', 
+                                        'action' =>'logout'
+                                    )
+                                );
+                                ?>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <?php endif; ?>
+                </ul>
+                <a class="uk-navbar-toggle uk-visible-small" data-uk-offcanvas="" href="#offcanvas"></a>
+                <div class="uk-navbar-brand uk-navbar-center uk-visible-small">Labs</div>
+            </nav>
+            <div class="uk-grid uk-grid-small" data-uk-grid-margin="">
+                <?php echo $this->Session->flash(); ?>
+                <?php echo $this->fetch('content'); ?>
+            </div>
+        </div>
+        <hr class="uk-grid-divider">
+        <div data-uk-grid-margin="" class="uk-grid">
+            <div class="uk-width-medium-1-1">
+                <div class="uk-panel uk-panel-box uk-text-center">
+                    <p><?php echo $this->Html->link('Hecho en la UIS', 'http://uis.edu.co', 
+                            array(
+                                'class' => 'uk-button uk-button-primary uk-margin-left', 
+                                'target' => '_new'
+                                )
+                            ); ?></p>
+                </div>
+            </div>
+        </div>
+        <div class="uk-offcanvas" id="offcanvas">
+            <div class="uk-offcanvas-bar">
+                <ul class="uk-nav uk-nav-offcanvas">
+                    <li class="uk-active">
+                        <a href="/">Inicio</a>
+                    </li>
+                    <li>
+                    <?php 
+                        echo $this->Html->link('CATEGORÍAS', 
+                            array(
+                                'controller' => 'categorias', 
+                                'action'     => 'index'
+                            )
+                        ); 
+                    ?>
+                    </li>
+                    <li>
+                        <?php 
+                        echo $this->Html->link('DOCUMENTOS', 
+                            array(
+                                'controller' => 'documentos', 
+                                'action' => 'index'
+                            )
+                        ); 
+                        ?>
+                    </li>
+                    <?php 
+                    $temp = $this->Session->read('user');
+                    if( !empty($temp) ):
+                    ?>
+                    <li>
+                    <?php 
+                    echo $this->Html->link('Editar perfil', 
+                        array(
+                            'controller' => 'users', 
+                            'action' =>'edit'
+                        )
+                    );
+                    ?>
+                    </li>
+                    <li>
+                    <?php 
+                    echo $this->Html->link('Configuración de correo', 
+                        array(
+                            'controller' => 'configuraciones', 
+                            'action' =>'mail'
+                        )
+                    ); 
+                    ?>
+                    </li>
+                    <li class="uk-nav-divider"></li>
+                    <li>
+                    <?php 
+                    echo $this->Html->link('Cerrar sesión', 
+                        array(
+                            'controller' => 'categorias', 
+                            'action' =>'logout'
+                        )
+                    );
+                    ?>
+                    </li>
+                    <?php endif; ?>
+                </ul>
+            </div>
+        </div>
+        <?php echo $this->Html->script('jquery-1.11.2.min'); ?>
+	<?php //echo $this->Html->script('https://code.jquery.com/ui/1.11.2/jquery-ui.min.js');?>
+        <?php echo $this->Html->script('uikit.min'); ?>
+    </body>
 </html>
