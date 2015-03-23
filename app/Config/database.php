@@ -61,6 +61,7 @@ class DATABASE_CONFIG {
 
 	public $default = array(
 		'datasource' => 'Mongodb.MongodbSource',
+		//'datasource' => 'mongodb.mongodbSource',
 		'persistent' => false,
 		'host' => 'localhost',
 		'port' => '27017',

@@ -1,32 +1,102 @@
-<table width="95%" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td width="4%"><?php echo $this->Html->image('docs.png', array('height'=>'32', 'width'=>'32')); ?></td>
-    <td width="96%"><h2>Documentos</h2></td>
-  </tr>
-</table>
-<table width="95%" border="0" cellpadding="8" cellspacing="0" style="border-bottom-color:#ddd; border-bottom-style:solid; border-bottom-width:thin">
-<?php 
-	echo $this->Html->css('autocomplete');
-	echo $this->Form->create('Documento', array('action'=> 'index'));  ?>
-  <tr>
-    <td width="95%" valign="middle" style="padding:10px"><?php 
-    echo $this->Form->input('nombreDocumentos', array('type'=>'text', 'id' => 'nombreDocumentos', 'label'=>'Buscar:')); ?>
-    <?php echo $this->Html->link('Mostrar todos', array('controller' => 'documentos', 'action' => 'index')); ?></td>
-    <td width="5%" align="center" valign="middle">
-		<?php echo $this->Form->end(__('Buscar', true)); ?>   </td>
-  </tr>
-</table>
-<table width="95%" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td width="2%"><?php echo $this->Html->image('add.png', array('height'=>'24', 'width'=>'24', 'url' => array('controller' => 'documentos', 'action' => 'add'))); ?></td>
-    <td width="98%" valign="middle"><?php echo $this->Html->link('Cargar un nuevo documento', array('controller' => 'documentos', 'action' => 'add', $id_cat)); ?></td>
-  </tr>
-</table>
+<div class="uk-width-medium-1-1" data-uk-grid-margin="">
+    <h1 class="uk-heading-medium">
+        <!-- <?php echo $this->Html->image('docs.png', 
+                    array(
+                        'height'=>'32', 
+                        'width'=>'32'
+                        )
+                ); 
+        ?>-->
+        <i class="uk-icon uk-icon-file-o"></i>
+        Documentos
+    </h1>
+</div>
+<div class="uk-width-medium-1-1" data-uk-grid-margin="">
+    <div class="uk-grid uk-grid-small" data-uk-grid-margin="">
+        <div class="uk-width-medium-1-2" data-uk-grid-margin="">
+            <?php echo $this->Html->css('autocomplete'); ?>
+            <div class="uk-panel uk-panel-box uk-panel-box-primary">
+                <?php echo $this->Form->create('Documento',
+                        array(
+                            'action'=> 'index',
+                            'class' => 'uk-panel uk-panel-box uk-form'
+                        )
+                    ); 
+                ?>
+                <?php echo $this->Form->input('nombreDocumentos',
+                    array(
+                        'type'          => 'text',
+                        'id'            => 'nombreDocumentos',
+                        'label'         => 'Buscar',
+                        'div'           => 'uk-form-row',
+                        'class'         => 'uk-width-1-1 uk-form-large',
+                        'required'      => true,
+                        'autofocus'     => true,
+                        'placeholder'   => 'Buscar por Nombre de Documento'
+                    )
+                ); ?>
+                <div class="uk-form-row">
+                    <?php echo $this->Html->link('Mostrar todos',
+                            array(
+                                'controller' => 'documentos', 
+                                'action'     => 'index'
+                            ),
+                            array('class' => 'uk-width-1-3 uk-button uk-button-danger')
+                        );
+                    ?>
+                    <?php echo $this->Form->button('Buscar',
+                        array(
+                            'type'  => 'submit',
+                            'class' => 'uk-width-1-3 uk-button uk-button-primary'
+                            )
+                        ); 
+                    ?>
+                </div>
+                <?php echo $this->Form->end();  ?>
+            </div>
+            <div class="uk-panel uk-panel-box uk-panel-box-primary">
+                <div class="uk-button-group">
+                    <?php echo $this->Html->link('<i class="uk-icon uk-hover uk-icon-plus"></i> Cargar Documento',
+                            array(
+                                'controller' => 'documentos', 
+                                'action'     => 'add'
+                            ),
+                            array(
+                                'escape'    => false,
+                                'class'     => 'uk-button uk-button-danger'
+                            )
+                        ); 
+                    ?>
+                    <?php echo $this->Html->link('Asociar nuevo documento', 
+                            array(
+                                'controller' => 'documentos', 
+                                'action'     => 'add', 
+                                $id_cat
+                            ),
+                            array('class' => 'uk-button uk-button-default')
+                    ); ?>
+                </div>
+            </div>
+            <div class="uk-panel uk-panel-box uk-panel-box-primary">
+                Ruta: <?php echo $this->Html->link('Root', 
+                        array(
+                            'controller' => 'documentos', 
+                            'action'     => 'index'
+                        )
+                    ); 
+                ?>
+            </div>
+        </div>
+        <div class="uk-width-medium-1-2" data-uk-grid-margin="">
+            
+        </div>
+    </div>
+</div>
+
 <table width="95%" border="0" cellspacing="3" cellpadding="3" bgcolor="#E1F1FD">
-  <tr>
-    <td>Ruta: <?php 
-	echo $this->Html->link('Root', array('controller' => 'documentos', 'action' => 'index'));
-	
+    <tr>
+        <td>
+<?php	
 	if(!empty($cpadres)){
 		for($i=count($cpadres)-1; $i>=0; $i--){
 			foreach($cpadres[$i] as $cpadre){
@@ -38,7 +108,7 @@
 				}
 		}}
 ?></td>
-  </tr>
+    </tr>
 </table>
 <?php 		if(!empty($mensaje)){
 				echo "<br><h3>".$mensaje."</h3>";
@@ -46,21 +116,21 @@
   if(!empty($carpetas) || !empty($objetos)):
 ?>
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr>
-		<th></th>
+    <tr>
+        <th></th>
         <th width="447">Nombre</th>
         <th width="60">Versión</th>
         <th width="79">Tama&ntilde;o</th>
         <th colspan="3">Descripci&oacute;n</th>
-  </tr>
+    </tr>
 	    <?php foreach ($carpetas as $carpeta): ?>
     <tr>
-    	<td width="18" height="1" valign="middle" style="font-size: 11px"><?php echo $this->Html->image('folder.png', array('height'=>'24', 'width' => '24', 'url' => 
+        <td width="18" height="1" valign="middle" style="font-size: 11px"><?php echo $this->Html->image('folder.png', array('height'=>'24', 'width' => '24', 'url' => 
 		array('controller' => 'documentos', 'action' => 'index', $carpeta['Categoria']['id']))); ?></td>
-      <td valign="middle" style="font-size: 11px"><?php echo $this->Html->link($carpeta['Categoria']['nombre'], 
+        <td valign="middle" style="font-size: 11px"><?php echo $this->Html->link($carpeta['Categoria']['nombre'], 
     			array('controller' => 'documentos', 'action' => 'index', $carpeta['Categoria']['id'])) ; ?></td>
-      <td align="right" valign="middle" style="font-size: 11px"></td>		
-      <td align="right" valign="middle" style="font-size: 11px"></td>
+        <td align="right" valign="middle" style="font-size: 11px"></td>		
+        <td align="right" valign="middle" style="font-size: 11px"></td>
         <td colspan="3" valign="middle" style="font-size: 11px">
             <?php echo $carpeta['Categoria']['descripcion']; ?>
         </td>
@@ -81,7 +151,7 @@
     	$tamano = $documento['archivo']['size']/1024;
     ?>
     <tr>
-    	<td width="18" height="1" valign="middle" style="font-size: 11px"><?php 
+        <td width="18" height="1" valign="middle" style="font-size: 11px"><?php 
 			$imagen_prop = array('height'=> '24', 'url' => array('controller' => 'documentos', 'action' => 'view', $documento['id']));
 			if(strpos($documento['archivo']['type'],'word'))
 				echo $this->Html->image('docs.png',$imagen_prop);
@@ -95,27 +165,27 @@
 				{  echo $this->Html->image($documento['archivo']['url'],$imagen_prop);
 				}
 		?></td>
-    	<td valign="middle" style="font-size: 11px">
+        <td valign="middle" style="font-size: 11px">
 		<?php echo $this->Html->link($documento['archivo']['name'], 
     	array('controller' => 'documentos', 'action' => 'view', $documento['id'])) ; ?>
-      </td>
-    	<td align="center" valign="middle" style="font-size: 11px"><center><?php if(!empty($documento['Version']))
+        </td>
+        <td align="center" valign="middle" style="font-size: 11px"><center><?php if(!empty($documento['Version']))
 				echo $documento['Version']; ?></center></td>		
-        <td align="right" valign="middle" style="font-size: 11px">
+<td align="right" valign="middle" style="font-size: 11px">
 		<?php echo number_format($tamano,2)." KB" ; ?>
-	   </td>
-        <td width="456" valign="middle" style="font-size: 11px">
+</td>
+<td width="456" valign="middle" style="font-size: 11px">
         <?php if(!empty($documento['Titulo']))
 				echo $documento['Titulo'];
 			if(!empty($documento['Nombre']))
 				echo $documento['Nombre']; ?>
-        </td>
-        <td width="17" valign="middle" style="font-size: 11px"><?php echo $this->Html->image('edit.png', array('height'=>'12', 'width'=>'12'
+</td>
+<td width="17" valign="middle" style="font-size: 11px"><?php echo $this->Html->image('edit.png', array('height'=>'12', 'width'=>'12'
 		, 'url' => array('controller' => 'documentos', 'action' => 'edit', $documento['id'])
 		));  ?></td>
-        <td width="19" align="center" valign="middle" style="font-size: 10px"><?php echo $this->Html->link('x', array('controller' => 'documentos',
+<td width="19" align="center" valign="middle" style="font-size: 10px"><?php echo $this->Html->link('x', array('controller' => 'documentos',
 		'action' => 'delete', $documento['id']), array('escape' => false), "¿Desea continuar?" );  ?></td>
-    </tr>
+</tr>
     <?php } ?>
 </table>
 <?php

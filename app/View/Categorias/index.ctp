@@ -16,7 +16,8 @@
         <?php echo $this->Html->link('Propiedades', 
                 array(
                     'controller' => 'propiedades', 
-                    'action'     => 'index', '517eb611398dacb818000004'
+                    'action'     => 'index', 
+                    '517eb611398dacb818000004'
                 ),
                 array('class'    => 'uk-button')
             ); 
@@ -24,7 +25,8 @@
         <?php echo $this->Html->link('Usuarios', 
                 array(
                     'controller' => 'usuarios', 
-                    'action'     => 'index', '517eb611398dacb818000004'
+                    'action'     => 'index', 
+                    '517eb611398dacb818000004'
                 ),
                 array('class'    => 'uk-button')
             ); 
@@ -34,7 +36,7 @@
 <div class="uk-width-medium-1-1" data-uk-grid-margin="">
     <?php if(!empty($categorias)): ?>
     <table class="uk-table uk-table-hover uk-table-striped uk-table-condensed">
-        <caption>Categorias<caption>
+        <caption>Categorias</caption>
         <thead>
             <tr>
                 <th class="uk-width-8-10 uk-text-left">Categoria</th>
@@ -49,18 +51,19 @@
                     <?php echo $this->Html->link($categoria['nombre'],
                             array(
                                 'controller' => 'categorias', 
-                                'action'     => 'view', $categoria['id']
+                                'action'     => 'view', 
+                                $categoria['id']
                             ),
                             array('class' => 'uk-button-link')
                         );
                     ?>
                 </td>
                 <td class="uk-width-1-10 uk-text-center">
-                    <?php
-                    echo $this->Html->link('', 
+                    <?php echo $this->Html->link('', 
                             array(
                                 'controller' => 'categorias', 
-                                'action'     => 'edit', $categoria['id']
+                                'action'     => 'edit', 
+                                $categoria['id']
                             ), 
                             array(
                                 'escape' => false,
@@ -70,17 +73,18 @@
                     ?>
                 </td>		
                 <td class="uk-width-1-10 uk-text-center">
-                    <?php 
-                    echo $this->Html->link('', 
+                    <?php echo $this->Html->link('',
                             array(
                                 'controller' => 'categorias', 
-                                'action'     => 'delete', $categoria['id']
-                            ), 
+                                'action'     => 'delete', 
+                                $categoria['id']
+                            ),
                             array(
                                 'escape' => false,
                                 'class'  => 'uk-icon-button uk-icon-trash'
                             ), 
-                            "¿Desea continuar?"); 
+                            "¿Desea continuar?"
+                        ); 
                     ?>
                 </td>
             </tr>

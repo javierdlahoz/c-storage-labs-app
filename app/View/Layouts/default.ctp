@@ -29,7 +29,7 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
         <title><?php echo 'Gestión documental' ?> | <?php echo $title_for_layout; ?></title>
 	<?php
         echo $this->Html->meta('icon');
-        echo $this->Html->css('uikit.almost-flat.min.css');
+        echo $this->Html->css('uikit.gradient.min.css');
         //echo $this->Html->css('https://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css');
 
         echo $this->fetch('meta');
@@ -68,14 +68,13 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
                     ?>
                     <li data-uk-dropdown="" class="uk-parent">
                         <a href=""><i class="uk-icon-user"></i>
-                            <?php echo $this->Session->read('Auth.User.user'); ?>
+                            <?php echo $this->Session->read('Auth.User.nombre'); ?>
                             <i class="uk-icon-caret-down"></i>
                         </a>
                         <div class="uk-dropdown uk-dropdown-navbar" style="">
                             <ul class="uk-nav uk-nav-navbar">
                                 <li>
-                                <?php 
-                                echo $this->Html->link('Editar perfil', 
+                                <?php echo $this->Html->link('Editar perfil', 
                                     array(
                                         'controller' => 'users', 
                                         'action' =>'edit'
@@ -84,22 +83,20 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
                                 ?>
                                 </li>
                                 <li>
-                                <?php 
-                                echo $this->Html->link('Configuración de correo', 
+                                <?php echo $this->Html->link('Configuración de correo', 
                                     array(
                                         'controller' => 'configuraciones', 
-                                        'action' =>'mail'
+                                        'action'     => 'mail'
                                     )
                                 ); 
                                 ?>
                                 </li>
                                 <li class="uk-nav-divider"></li>
                                 <li>
-                                <?php 
-                                echo $this->Html->link('Cerrar sesión', 
+                                <?php echo $this->Html->link('Cerrar sesión', 
                                     array(
                                         'controller' => 'categorias', 
-                                        'action' =>'logout'
+                                        'action'     => 'logout'
                                     )
                                 );
                                 ?>
@@ -112,8 +109,14 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
                 <a class="uk-navbar-toggle uk-visible-small" data-uk-offcanvas="" href="#offcanvas"></a>
                 <div class="uk-navbar-brand uk-navbar-center uk-visible-small">Labs</div>
             </nav>
+            <?php if ( $this->Session->flash() ): ?>
+            <div class="uk-width-medium-1-1" data-uk-grid-margin="">
+                <div class="uk-alert uk-alert-danger">
+                    <h3><?php echo $this->Session->flash(); ?></h3>
+                </div>
+            </div>
+            <?php endif; ?>
             <div class="uk-grid uk-grid-small" data-uk-grid-margin="">
-                <?php echo $this->Session->flash(); ?>
                 <?php echo $this->fetch('content'); ?>
             </div>
         </div>

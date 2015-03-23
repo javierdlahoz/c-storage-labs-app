@@ -1,3 +1,18 @@
+<?php if($this->Session->read('Auth.User.role') == 'admin'): ?>
+    <div class="uk-width-medium-1-1" data-uk-grid-margin="">
+        <div class="uk-button-group">
+        <?php echo $this->Html->link('Regresar al listado', 
+                array(
+                    'controller' => 'users', 
+                    'action' => 'index'
+                ),
+                array('class'    => 'uk-button uk-button-primary')
+            ); 
+        ?>
+        </div>
+    </div>
+<?php endif; ?>
+
 <div class="uk-width-medium-1-1" data-uk-grid-margin="">
     <div class="uk-panel uk-panel-box uk-panel-box-primary">
         <?php echo $this->Form->create('User',
@@ -8,11 +23,6 @@
         ?>
         <legend>Crear Usuario</legend>
         
-        <?php if($this->Session->read('Auth.User.role') == 'admin'): ?>
-        <div class="uk-form-row">
-            <?php echo $this->Html->link('<< Regresar a la lista', '/users/index'); ?>
-        </div>
-        <?php endif; ?>
         <?php echo $this->Form->input('username',
             array(
                 'div'           => 'uk-form-row',
@@ -48,7 +58,6 @@
                 'div'           => 'uk-form-row',
                 'class'         => 'uk-width-1-1 uk-form-large',
                 'required'      => true,
-                'autofocus'     => true,
                 'label'         => 'Nombre de Usuario',
                 'placeholder'   => 'Nombre de Pila del Usuario',
             )
@@ -58,7 +67,6 @@
                 'div'           => 'uk-form-row',
                 'class'         => 'uk-width-1-1 uk-form-large',
                 'required'      => true,
-                'autofocus'     => true,
                 'label'         => 'Email',
                 'placeholder'   => 'Correo eectrónico',
             )
@@ -67,8 +75,7 @@
             array(
                 'div'           => 'uk-form-row',
                 'class'         => 'uk-width-1-1 uk-form-large',
-                'required'      => true,
-                'autofocus'     => true,
+                'required'      => false,
                 'label'         => 'Organización',
                 'placeholder'   => 'Nombre de la Organización',
             )
@@ -79,8 +86,7 @@
                 'value'         => 'author',
                 'div'           => 'uk-form-row',
                 'class'         => 'uk-width-1-1 uk-form-large',
-                'required'      => true,
-                'autofocus'     => true,
+                'required'      => false,
                 'label'         => false,
                 'placeholder'   => 'Autor',
             )
@@ -90,8 +96,7 @@
                 'type'          => 'file',
                 'div'           => 'uk-form-row',
                 'class'         => 'uk-width-1-1 uk-form-large',
-                'required'      => true,
-                'autofocus'     => true,
+                'required'      => false,
                 'label'         => 'Imagen de Avatar',
                 'placeholder'   => 'Imagen que lo identifique',
             )

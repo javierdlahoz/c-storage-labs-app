@@ -1,41 +1,129 @@
-<h2><?php echo $nombre; ?></h2><p><?php 
-if($canterior=='517eb611398dacb818000004'){
-	echo $this->Html->link('<< Regresar', array('controller' => 'categorias', 'action' => 'index')); }
-	else
-	{
-		echo $this->Html->link('<< Regresar', array('controller' => 'categorias', 'action' => 'view', $canterior));
-		} ?>  ||  <?php echo $this->Html->link('Propiedades', array('controller' => 'propiedades', 'action' => 'index', $id)); ?> || <?php echo $this->Html->link('Usuarios', array('controller' => 'usuarios', 'action' => 'index', $id)); ?></p>
-<p><?php echo $this->Html->link('Crear nueva subcategoria', array('controller' => 'categorias', 'action' => 'addc', $cpadre)); ?>
-  <?php   
-  if(!empty($categorias)) {?>
-</p>
-<br />
-<table width="95%">
-<tr>
-        <th width="940" align="left">SubCategoria</th>
-        <th align="center" width="41">Editar</th>
-        <th align="center" width="45">Borrar</th>
-    </tr>
-    
-    
-    <?php foreach ($categorias as $categoria): ?>
-    <tr>
-    	<td><?php echo $this->Html->link($categoria['Categoria']['nombre'], 
-    			array('controller' => 'categorias', 'action' => 'view', $categoria['Categoria']['id'])) ; ?></td>
-    	<td width="41" align="center" style="text-align: center"><?php 
-			$imagen = $this->Html->image('edit.png', array('height'=>'16', 'width'=>'16')); 
-		echo $this->Html->link($imagen, 
-    			array('controller' => 'categorias', 'action' => 'edit', $categoria['Categoria']['id']), array('escape'=>false)) ; ?></td>		
-        <td width="45" align="center" style="text-align: center">
-        	<center>
-        	<?php 
-        	    	echo $this->Html->link('x', array('controller' => 'categorias', 'action' => 'delete', $categoria['Categoria']['id']), array('escape' => false), "Desea continuar?" ); ?>
-        </center>
-        </td>
-    </tr>
-    <?php endforeach; ?>
-</table>
-<?php } else {?>
-<p>Aun no se han agregado ningun recurso, puede cargar uno 
- <a href = 'cateogiras/add'>aqu�</a></p>
-<?php } 
+<div class="uk-width-medium-1-1" data-uk-grid-margin="">
+    <h1 class="uk-heading-medium">
+        <?php echo $nombre; ?>
+    </h1>
+</div>
+<div class="uk-width-medium-1-1" data-uk-grid-margin="">
+    <div class="uk-button-group">
+        <?php 
+        if($canterior == '517eb611398dacb818000004'):
+            echo $this->Html->link('Regresar', 
+                    array(
+                        'controller' => 'categorias', 
+                        'action'     => 'index'
+                    ),
+                    array('class'    => 'uk-button uk-button-primary')
+                );
+        else:
+            echo $this->Html->link('Regresar', 
+                    array(
+                        'controller' => 'categorias', 
+                        'action' => 'view', 
+                        $canterior
+                    ),
+                    array('class'    => 'uk-button uk-button-danger')
+                );
+        endif; 
+        ?>
+        <?php echo $this->Html->link('Propiedades', 
+                array(
+                    'controller' => 'propiedades', 
+                    'action'     => 'index', 
+                    $id
+                ),
+                array('class'    => 'uk-button')
+            ); 
+        ?>
+        <?php echo $this->Html->link('Usuarios', 
+                array(
+                    'controller' => 'usuarios', 
+                    'action'     => 'index', 
+                    $id
+                ),
+                array('class'    => 'uk-button')
+            ); 
+        ?>
+        <?php echo $this->Html->link('Crear nueva subcategoria', 
+                array(
+                    'controller' => 'categorias', 
+                    'action' => 'addc', 
+                    $cpadre
+                ),
+                array('class'    => 'uk-button uk-button-danger')
+            ); 
+        ?>
+    </div>
+</div>
+<div class="uk-width-medium-1-1" data-uk-grid-margin="">
+    <?php if(!empty($categorias)): ?>
+    <div class="uk-overflow-container">
+        <table class="uk-table uk-table-hover uk-table-striped uk-table-condensed">
+            <caption>Subcategorías</caption>
+            <thead>
+                <tr>
+                    <th class="uk-width-8-10 uk-text-left">Subcategoria</th>
+                    <th class="uk-width-1-10 uk-text-center">Editar</th>
+                    <th class="uk-width-1-10 uk-text-center">Borrar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($categorias as $categoria): ?>
+                <tr>
+                    <td>
+                        <?php echo $this->Html->link($categoria['Categoria']['nombre'], 
+                                array(
+                                    'controller' => 'categorias', 
+                                    'action'     => 'view', 
+                                    $categoria['Categoria']['id']
+                                ),
+                                array('class'    => 'uk-button uk-button-link')
+                            ); 
+                        ?>
+                    </td>
+                    <td class="uk-text-center">
+                        <?php echo $this->Html->link('', 
+                                array(
+                                    'controller' => 'categorias', 
+                                    'action'     => 'edit', 
+                                    $categoria['Categoria']['id']
+                                ), 
+                                array(
+                                    'escape' => false,
+                                    'class'  => 'uk-icon-button uk-icon-edit'
+                                )
+                            );
+                        ?>
+                    </td>		
+                    <td class="uk-text-center">
+                        <?php echo $this->Html->link('',
+                                array(
+                                    'controller' => 'categorias', 
+                                    'action'     => 'delete', 
+                                    $categoria['Categoria']['id']
+                                ),
+                                array(
+                                    'escape' => false,
+                                    'class'  => 'uk-icon-button uk-icon-trash'
+                                ), 
+                                "¿Desea continuar?"
+                            ); 
+                        ?>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+    <?php else: ?>
+    <p>
+        Aún no se han agregado ningun recurso, puede cargar uno 
+        <?php echo $this->Html->link('aquí',
+                array(
+                    'controller' => 'categorias', 
+                    'action'     => 'add'
+                )
+            ); 
+        ?>
+    </p>
+    <?php endif; ?>
+</div>

@@ -18,7 +18,6 @@ class UsersController extends AppController {
     public function add() { //adicionarle la funcionalidad de env�o de correo electr�nico
         $temp = $this->Session->read('Auth.User.id');
         if (empty($temp) || ($this->Session->read('Auth.User.role') == 'admin')) {
-
             if ($this->request->is('post')) {
                 $resultado = $this->User->find('count', array('conditions' => array('username' => $this->request->data['User']['username'])));
 
@@ -52,17 +51,16 @@ class UsersController extends AppController {
                     }
                 } else {
                     if ($this->request->data['User']['password'] != $this->request->data['User']['Confirmar_password']) {
-                        $this->Session->setFlash(__('Los passwords no coinciden'));
+                        $this->Session->setFlash(__('Las <b>Contrase&ntilde;as</b> no coinciden'));
                     } else {
                         if ((strlen($this->request->data['User']['username']) <= 5))
-                            $this->Session->setFlash(__('El username debe tener al menos 6 caracteres'));
+                            $this->Session->setFlash(__('El <b>Login o Nombre de Usuario</b> debe tener al menos 6 caracteres'));
                         else
-                            $this->Session->setFlash(__('El usuario ya existe'));
+                            $this->Session->setFlash(__('El <b>Login o Nombre de Usuario</b> ya existe. Pruebe con otro.'));
                     }
                 }
             }
-        }
-        else {
+        } else {
             $this->Session->setFlash(__('No puedes usar esta funcionalidad'));
             $this->redirect('../');
         }
@@ -373,7 +371,7 @@ class UsersController extends AppController {
             if (!empty($this->data['User']['password'])) {
                 if (strlen($this->data['User']['password']) < 5) {
                     $control = false;
-                    $this->Session->setFlash(__('El password debe tener al menos 5 caracteres', true));
+                    $this->Session->setFlash(__('El password debe tener al menos 5 caracteres', false));
                 }
 
                 if ($this->data['User']['password'] != $this->data['User']['confirmar_password']) {
