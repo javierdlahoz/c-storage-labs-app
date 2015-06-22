@@ -1,7 +1,6 @@
-<?php
-
-echo $this->Form->create('Usuario'); ?>
-
+<?php 
+    echo $this->Form->create('Usuario'); 
+?>
 <fieldset>
     <legend>Asignar Usuario</legend>
     <legend>

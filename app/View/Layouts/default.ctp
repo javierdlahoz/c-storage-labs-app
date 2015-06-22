@@ -39,8 +39,12 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
     </head>
     <body>
         <div class="uk-container uk-container-center uk-margin-top uk-margin-large-bottom">
+            <?php 
+            $temp = $this->Session->read('user');
+            if($temp !== null):
+            ?>
             <nav class="uk-navbar uk-margin-large-bottom">
-                <a href="/" class="uk-navbar-brand uk-hidden-small">Labs</a>
+                <a class="uk-navbar-brand uk-hidden-small">Laboratorios UIS</a>
                 <ul class="uk-navbar-nav uk-hidden-small">
                     <li>
                     <?php 
@@ -62,10 +66,6 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
                         ); 
                         ?>
                     </li>
-                    <?php 
-                    $temp = $this->Session->read('user');
-                    if( !empty($temp) ):
-                    ?>
                     <li data-uk-dropdown="" class="uk-parent">
                         <a href=""><i class="uk-icon-user"></i>
                             <?php echo $this->Session->read('Auth.User.nombre'); ?>
@@ -95,7 +95,7 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
                                 <li>
                                 <?php echo $this->Html->link('Cerrar sesión', 
                                     array(
-                                        'controller' => 'categorias', 
+                                        'controller' => 'users', 
                                         'action'     => 'logout'
                                     )
                                 );
@@ -104,15 +104,20 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
                             </ul>
                         </div>
                     </li>
-                    <?php endif; ?>
                 </ul>
                 <a class="uk-navbar-toggle uk-visible-small" data-uk-offcanvas="" href="#offcanvas"></a>
                 <div class="uk-navbar-brand uk-navbar-center uk-visible-small">Labs</div>
             </nav>
-            <?php if ( $this->Session->flash() ): ?>
+            <?php endif; ?>
+            <?php $errorMessage = $this->Session->flash(); ?>
+            <?php if ($errorMessage): ?>
             <div class="uk-width-medium-1-1" data-uk-grid-margin="">
                 <div class="uk-alert uk-alert-danger">
-                    <h3><?php echo $this->Session->flash(); ?></h3>
+                    <h3>
+                    <?php 
+                        echo $errorMessage; 
+                    ?>
+                    </h3>
                 </div>
             </div>
             <?php endif; ?>

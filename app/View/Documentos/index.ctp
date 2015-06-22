@@ -59,7 +59,8 @@
                     <?php echo $this->Html->link('<i class="uk-icon uk-hover uk-icon-plus"></i> Cargar Documento',
                             array(
                                 'controller' => 'documentos', 
-                                'action'     => 'add'
+                                'action'     => 'add',
+                                $id_cat
                             ),
                             array(
                                 'escape'    => false,

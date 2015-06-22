@@ -5,6 +5,7 @@ App::uses('CakeEmail', 'Network/Email');
 class UsersController extends AppController {
 
     public $components = array('RequestHandler', 'Auth');
+    var $uses = array('Categoria');
     var $helpers = array('Html', 'Form', 'Time', 'Js' => array('Jquery'));
 
     public function view($id = null) {
@@ -25,25 +26,6 @@ class UsersController extends AppController {
                     $originalPassword = $this->request->data['User']['password'];
                     $this->request->data['User']['password'] = AuthComponent::password($this->request->data['User']['password']);
                     if ($this->User->save($this->request->data)) {
-
-                        //$emailTo = $this->request->data['User']['email'];
-                        // if(!empty($emailTo)){
-                        // 	$email = new CakeEmail();
-                        // 	$email->config('smtp');
-                        // 	$email->from(array('observatorio@udi.edu.co' => 'Observatorio'));
-                        // 	$email->to($emailTo);
-                        // 	$email->subject("Creaci�n de cuenta");
-                        // 	$texto = "Esto es un mensaje generado autom�ticamente por el observatorio de aplicaciones<br><br>";
-                        // 	$texto = $texto."se ha creado su cuenta de usuario de la siguiente manera, <br>
-                        // 			username: '".$this->request->data['User']['username']."'<br>Password: '".$originalPassword."'
-                        // 		    <br>";
-                        // 	$email->sendAs = 'html';
-                        // 	$email->emailFormat('html');
-                        // 	$email->send($texto);
-                        // 	$this->redirect('../../observatorio');
-                        // }
-
-
                         $this->Session->setFlash(__('El usuario ha sido creado exitosamente'));
                         $this->redirect(array('action' => 'index'));
                     } else {
@@ -148,14 +130,11 @@ class UsersController extends AppController {
             if ($this->Auth->login()) {
                 $this->Session->write('user', $this->request->data['User']['username']);
                 $this->redirect(array('controller' => 'documentos', 'action' => 'index'));
-            } else {
-                $this->Session->setFlash(__('Nombre de usuario y/o password incorrectos, por favor intente de nuevo'));
+            } 
+            else{
+                $this->Session->setFlash('Nombre de usuario y/o password incorrectos, por favor intente de nuevo');
             }
         }
-    }
-
-    public function logout() {
-        $this->redirect($this->Auth->logout());
     }
 
     function generateUniqueFilename($fileName, $path = '') {
@@ -337,6 +316,11 @@ class UsersController extends AppController {
             $temporal = $this->request->data['User']['username'];
 
             $result = $this->User->find('first', array('conditions' => array('User.username' => $temporal)));
+            if(!$result){
+                $this->Session->setFlash("Usuario no encontrado");
+                return false;
+            }
+            
             $emailTo = $result['User']['email'];
             $newpss = rand(100000, 999999);
             $result['User']['password'] = $this->Auth->password($newpss);
@@ -358,6 +342,30 @@ class UsersController extends AppController {
 
                 $this->Session->setFlash(__('Se ha enviado un correo a su cuenta de correo con la contrase�a', true));
             }
+        }
+    }
+    
+    public function addToFolder($id = null) {
+        
+        $usuarios = $this->User->find('all');
+        $formattedUsers = array();
+        foreach ($usuarios as $usuario){
+            if(isset($usuario['User']['username'])){
+                $formattedUsers[$usuario['User']['username']] = $usuario['User']['nombre'];
+            }
+        }
+        $this->set('usuarios', $formattedUsers);
+        $this->set('cpadre', $id);
+        
+        if ($this->request->is('post')) {
+//             var_dump($this->request->data['Usuario']);
+//             die();
+            $id = $this->request->data['Usuario']['cpadre'];
+            $this->Categoria->save(array('id' => $id, '$push' => array('usuarios' =>
+                array('id' => $this->request->data['Usuario']['id'],
+                    'username' => $this->request->data['Usuario']['usuario'],
+                ))));
+            $this->redirect(array('controller' => 'usuarios', 'action' => 'index', $id));
         }
     }
 
@@ -412,6 +420,14 @@ class UsersController extends AppController {
             return false;
         } else
             return true;
+    }
+    
+    function logout() {
+        $this->Session->delete('Auth');
+        $this->Session->delete('user');
+        $this->Session->delete('admin');
+        $this->redirect($this->Auth->logout());
+        $this->redirect('../');
     }
 
 }

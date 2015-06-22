@@ -56,7 +56,7 @@ class EmailConfig {
 		'port' => 465,
 		'timeout' => 30,
 		'username' => 'javierdlahoz@gmail.com',
-		'password' => 'julianayjavi',
+		'password' => 'juliana22',
 		'client' => null,
 		'log' => false,
 		//'charset' => 'utf-8',

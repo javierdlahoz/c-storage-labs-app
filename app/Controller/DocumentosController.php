@@ -76,7 +76,7 @@ class DocumentosController extends AppController {
 			$this->set('propiedades', $propiedades);
 		}
 		else {
-			$this->Session->setFlash(__(utf8_encode('El usuario no está registrado o no tiene permisos para ingresar a esta sección')));
+			$this->Session->setFlash(__(utf8_encode('El usuario no estï¿½ registrado o no tiene permisos para ingresar a esta secciï¿½n')));
 			$this->redirect(array('controller' => 'categorias', 'action' => 'validar'));
 		}
 
@@ -84,6 +84,11 @@ class DocumentosController extends AppController {
 
 	public function add($id_cat = null)
 	{
+	    if($id_cat === null){
+	        $this->Session->setFlash("No puedes subir documentos a la carpeta RaÃ­z");
+	        $this->redirect("/documentos");
+	    }
+	    
 		$this->Session->write('id', $id_cat);
 		
 		$this->set('id_cat', $id_cat);
@@ -174,8 +179,8 @@ class DocumentosController extends AppController {
 				$email->from(array('ceiam@uis.edu.co' => 'CEIAM - Documental'));
 				$email->to($mail_calidad);
 				$email->subject("Manejo de archivos");
-				$texto = 'Se ha añadido un nuevo archivo a la carpeta '.$nombre_cat.', el cual tiene por nombre
-				de archivo '.$nombre_doc.'<br><br>Este archivo ha sido añadido por <strong>'.
+				$texto = 'Se ha aï¿½adido un nuevo archivo a la carpeta '.$nombre_cat.', el cual tiene por nombre
+				de archivo '.$nombre_doc.'<br><br>Este archivo ha sido aï¿½adido por <strong>'.
 				$this->Session->read('user').'</strong>';
 
 				$email->sendAs = 'html';
@@ -522,7 +527,7 @@ class DocumentosController extends AppController {
 			}
 		}
 		else {
-			$this->Session->setFlash(__(utf8_encode('El usuario no está registrado o no tiene permisos para ingresar a esta sección')));
+			$this->Session->setFlash(__(utf8_encode('El usuario no estï¿½ registrado o no tiene permisos para ingresar a esta secciï¿½n')));
 			$this->redirect(array('controller' => 'categorias', 'action' => 'validar'));
 		}
 	}
@@ -561,7 +566,7 @@ class DocumentosController extends AppController {
 			$this->redirect(array('controller'=>'documentos', 'action' => 'index', $id_categoria));
 		}
 		else {
-			$this->Session->setFlash(__(utf8_encode('El usuario no está registrado o no tiene permisos para ingresar a esta sección')));
+			$this->Session->setFlash(__(utf8_encode('El usuario no estï¿½ registrado o no tiene permisos para ingresar a esta secciï¿½n')));
 			$this->redirect(array('controller' => 'categorias', 'action' => 'validar'));
 		}
 	}
@@ -594,7 +599,7 @@ class DocumentosController extends AppController {
 		else
 		{
 			return false;
-			$this->Session->setFlash(__('Usted no posee los privilegios para ingresar en esta página'));
+			$this->Session->setFlash(__('Usted no posee los privilegios para ingresar en esta pï¿½gina'));
 		}
 		 
 	}

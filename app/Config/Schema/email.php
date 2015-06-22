@@ -43,12 +43,23 @@
 class EmailConfig {
 
 	public $default = array(
-		'transport' => 'Mail',
-		'from' => 'you@localhost',
+		'host' => 'ssl://smtp.gmail.com',
+        'port' => 465,
+        'username' => 'javierdlahoz@gmail.com',
+        'password' => 'juliana22',
+        'transport' => 'Smtp'
 		//'charset' => 'utf-8',
 		//'headerCharset' => 'utf-8',
 	);
 
+	public $gmail = array(
+	    'host' => 'ssl://smtp.gmail.com',
+        'port' => 465,
+        'username' => 'javierdlahoz@gmail.com',
+        'password' => 'juliana22',
+        'transport' => 'Smtp'
+	);
+	
 	public $smtp = array(
 		'transport' => 'Smtp',
 		'from' => array('site@localhost' => 'My Site'),

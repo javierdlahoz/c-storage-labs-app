@@ -34,8 +34,8 @@
         }
         echo $this->Html->link('Asignar un usuario', 
                 array(
-                    'controller' => 'usuarios', 
-                    'action'     => 'add', 
+                    'controller' => 'users', 
+                    'action'     => 'addToFolder', 
                     $id
                 ),
                 array('class' => 'uk-button uk-button-default')
@@ -82,8 +82,9 @@
             Aún no se han asignado usuarios, puede asignar uno 
             <?php echo $this->Html->link('aquí', 
                 array(
-                    'controller' => 'usuarios', 
-                    'action'     => 'add'
+                    'controller' => 'users', 
+                    'action'     => 'addToFolder',
+                    $id
                 )
             ); ?>
         </p>
