@@ -340,7 +340,8 @@ class UsersController extends AppController {
                 $email->send($texto);
                 //$this->redirect('../../observatorio');
 
-                $this->Session->setFlash(__('Se ha enviado un correo a su cuenta de correo con la contrase�a', true));
+                $this->Session->setFlash(__('Se ha enviado un correo a su cuenta de correo con la '
+                        . 'contraseña', true));
             }
         }
     }

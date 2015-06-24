@@ -5,13 +5,13 @@
 </div>
 <div class="uk-width-medium-1-1" data-uk-grid-margin="">
     <div class="uk-grid uk-grid-small" data-uk-grid-margin="">
-        <div class="uk-width-medium-1-3" data-uk-grid-margin="">
+        <div class="uk-width-medium-1-1" data-uk-grid-margin="">
             <?php echo $this->Html->css('autocomplete'); ?>
             <div class="uk-panel uk-panel-box uk-panel-box-primary">
                 <?php echo $this->Form->create('User',
                         array(
                             'action'=> 'index',
-                            'class' => 'uk-panel uk-panel-box uk-form'
+                            'class' => 'uk-form uk-form-stacked'
                         )
                     ); 
                 ?>
@@ -19,9 +19,16 @@
                     array(
                         'type'          => 'text',
                         'id'            => 'username',
-                        'label'         => 'Buscar',
-                        'div'           => 'uk-form-row',
-                        'class'         => 'uk-width-1-1 uk-form-large',
+                        'div' => array(
+                            'class' => 'uk-form-row'
+                        ),
+                        'label' => array(
+                            'text' => 'Buscar por Nombre',
+                            'class' => 'uk-form-label'
+                        ),
+                        'between' => '<div class="uk-form-controls">',
+                        'after' => '</div>',
+                        'class'         => 'uk-width-1-1',
                         'required'      => true,
                         'autofocus'     => true,
                         'placeholder'   => 'Buscar por Nombre de Usuario o Login'
@@ -33,31 +40,26 @@
                                 'controller' => 'users', 
                                 'action'     => 'index'
                             ),
-                            array('class' => 'uk-width-2-3 uk-button uk-button-danger')
+                            array('class' => 'uk-button uk-button-danger')
                         );
                     ?>
                     <?php echo $this->Form->button('Ir',
                         array(
                             'type'  => 'submit',
-                            'class' => 'uk-width-1-5 uk-button uk-button-primary'
+                            'class' => 'uk-button uk-button-primary'
                             )
+                        ); 
+                    ?>
+                    <?php echo $this->Html->link('Crear un nuevo usuario', 
+                            array(
+                                'controller' => 'users', 
+                                'action' => 'add'),
+                            array('class' => 'uk-button uk-button-primary')
                         ); 
                     ?>
                 </div>
                 <?php echo $this->Form->end(); ?>
             </div>
-        </div>
-        <div class="uk-width-medium-1-3" data-uk-grid-margin="">
-            <?php echo $this->Html->link('Crear un nuevo usuario', 
-                    array(
-                        'controller' => 'users', 
-                        'action' => 'add'),
-                    array('class' => 'uk-button uk-button-primary')
-                ); 
-            ?>
-        </div>
-        <div class="uk-width-medium-1-3" data-uk-grid-margin="">
-            
         </div>
     </div>
     <?php if(!empty($users)): ?>

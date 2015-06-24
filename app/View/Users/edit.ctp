@@ -19,7 +19,7 @@
                 array(
                     'action' => 'edit', 
                     'type'   => 'file',
-                    'class'  => 'uk-panel uk-panel-box uk-form'
+                    'class'  => 'uk-form uk-form-stacked'
                 )
             ); 
         ?>
@@ -27,47 +27,74 @@
         
         <?php echo $this->Form->input('nombre',
             array(
-                'div'           => 'uk-form-row',
-                'class'         => 'uk-width-1-1 uk-form-large',
+                'div' => array(
+                    'class' => 'uk-form-row'
+                ),
+                'label' => array(
+                    'text' => 'Nombre completo y apellidos',
+                    'class' => 'uk-form-label'
+                ),
+                'between' => '<div class="uk-form-controls">',
+                'after' => '</div>',
                 'required'      => true,
                 'autofocus'     => true,
-                'placeholder'   => 'Nombre de Pila',
-                'label'         => 'Nombre completo y apellidos'
+                'placeholder'   => 'Nombre de Pila'
             )
         ); ?>
         <?php echo $this->Form->input('email',
             array(
-                'div'           => 'uk-form-row',
-                'class'         => 'uk-width-1-1 uk-form-large',
+                'div' => array(
+                    'class' => 'uk-form-row'
+                ),
+                'label' => array(
+                    'text' => 'Correo eectrónico',
+                    'class' => 'uk-form-label'
+                ),
+                'between' => '<div class="uk-form-controls">',
+                'after' => '</div>',
                 'required'      => true,
-                'label'         => 'Email',
-                'placeholder'   => 'Correo eectrónico',
             )
         ); ?>
         <?php echo $this->Form->input('organizacion',
             array(
-                'div'           => 'uk-form-row',
-                'class'         => 'uk-width-1-1 uk-form-large',
+                'div' => array(
+                    'class' => 'uk-form-row'
+                ),
+                'label' => array(
+                    'text' => 'Organización',
+                    'class' => 'uk-form-label'
+                ),
+                'between' => '<div class="uk-form-controls">',
+                'after' => '</div>',
                 'required'      => false,
-                'label'         => 'Organización',
                 'placeholder'   => 'Nombre de la Organización',
             )
         ); ?>
         <?php echo $this->Form->input('imagen',
             array(
                 'type'          => 'file',
-                'div'           => 'uk-form-row',
-                'class'         => 'uk-width-1-1 uk-form-large',
+                'div' => array(
+                    'class' => 'uk-form-row'
+                ),
+                'label' => array(
+                    'text' => 'Imagen de Avatar',
+                    'class' => 'uk-form-label'
+                ),
+                'between' => '<div class="uk-form-controls">',
+                'after' => '</div>',
                 'required'      => false,
-                'label'         => 'Imagen de Avatar',
                 'placeholder'   => 'Imagen que lo identifique',
             )
         ); ?>
         <?php echo $this->Form->input('id',
             array(
                 'type'          => 'hidden',
-                'div'           => 'uk-form-row',
-                'class'         => 'uk-width-1-1 uk-form-large'
+                'div' => array(
+                    'class' => 'uk-form-row'
+                ),
+                'label' => false,
+                'between' => '<div class="uk-form-controls">',
+                'after' => '</div>',
             )
         ); ?>
         <hr/>
@@ -94,7 +121,7 @@
             <?php echo $this->Form->button('Modificar', 
                 array(
                     'type'  => 'submit',
-                    'class' => 'uk-width-1-5 uk-button uk-button-primary'
+                    'class' => 'uk-button uk-button-primary'
                     )
                 ); 
             ?>

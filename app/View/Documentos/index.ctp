@@ -13,13 +13,13 @@
 </div>
 <div class="uk-width-medium-1-1" data-uk-grid-margin="">
     <div class="uk-grid uk-grid-small" data-uk-grid-margin="">
-        <div class="uk-width-medium-1-2" data-uk-grid-margin="">
+        <div class="uk-width-medium-1-1" data-uk-grid-margin="">
             <?php echo $this->Html->css('autocomplete'); ?>
             <div class="uk-panel uk-panel-box uk-panel-box-primary">
                 <?php echo $this->Form->create('Documento',
                         array(
                             'action'=> 'index',
-                            'class' => 'uk-panel uk-panel-box uk-form'
+                            'class' => 'uk-form uk-form-stacked'
                         )
                     ); 
                 ?>
@@ -27,9 +27,32 @@
                     array(
                         'type'          => 'text',
                         'id'            => 'nombreDocumentos',
-                        'label'         => 'Buscar',
-                        'div'           => 'uk-form-row',
-                        'class'         => 'uk-width-1-1 uk-form-large',
+                        /*
+                        'format'        => array(
+                            'before', 
+                            'label', 
+                            'between', 
+                            'input', 
+                            'error', 
+                            'after'
+                        ),
+                        */
+                        'div' => array(
+                            'class' => 'uk-form-row'
+                        ),
+                        'label' => array(
+                            'text' => 'Buscar por nombre',
+                            'class' => 'uk-form-label'
+                        ),
+                        'between' => '<div class="uk-form-controls">',
+                        'after' => '</div>',
+                        /*'error' => array(
+                            'attributes' => array(
+                                'wrap' => 'span', 
+                                'class' => 'help-inline'
+                            )
+                        ),*/
+                        'class'         => 'uk-width-1-1',
                         'required'      => true,
                         'autofocus'     => true,
                         'placeholder'   => 'Buscar por Nombre de Documento'
@@ -41,13 +64,15 @@
                                 'controller' => 'documentos', 
                                 'action'     => 'index'
                             ),
-                            array('class' => 'uk-width-1-3 uk-button uk-button-danger')
+                            array(
+                                'class' => 'uk-button uk-button-danger'
+                            )
                         );
                     ?>
                     <?php echo $this->Form->button('Buscar',
                         array(
                             'type'  => 'submit',
-                            'class' => 'uk-width-1-3 uk-button uk-button-primary'
+                            'class' => 'uk-button uk-button-primary'
                             )
                         ); 
                     ?>
