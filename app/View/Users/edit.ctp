@@ -27,15 +27,16 @@
         
         <?php echo $this->Form->input('nombre',
             array(
-                'div' => array(
+                'div'   => array(
                     'class' => 'uk-form-row'
                 ),
                 'label' => array(
-                    'text' => 'Nombre completo y apellidos',
+                    'text'  => 'Nombre y apellidos completos',
                     'class' => 'uk-form-label'
                 ),
-                'between' => '<div class="uk-form-controls">',
-                'after' => '</div>',
+                'between'   => '<div class="uk-form-controls">',
+                'after'     => '</div>',
+                'class'         => 'uk-width-1-1',
                 'required'      => true,
                 'autofocus'     => true,
                 'placeholder'   => 'Nombre de Pila'
@@ -52,6 +53,7 @@
                 ),
                 'between' => '<div class="uk-form-controls">',
                 'after' => '</div>',
+                'class'         => 'uk-width-1-1',
                 'required'      => true,
             )
         ); ?>
@@ -66,6 +68,7 @@
                 ),
                 'between' => '<div class="uk-form-controls">',
                 'after' => '</div>',
+                'class'         => 'uk-width-1-1',
                 'required'      => false,
                 'placeholder'   => 'Nombre de la Organización',
             )
@@ -82,6 +85,7 @@
                 ),
                 'between' => '<div class="uk-form-controls">',
                 'after' => '</div>',
+                'class'         => 'uk-width-1-1',
                 'required'      => false,
                 'placeholder'   => 'Imagen que lo identifique',
             )
@@ -95,6 +99,7 @@
                 'label' => false,
                 'between' => '<div class="uk-form-controls">',
                 'after' => '</div>',
+                'class'         => 'uk-width-1-1',
             )
         ); ?>
         <hr/>
@@ -125,15 +130,13 @@
                     )
                 ); 
             ?>
-        </div>
-        <div class="uk-form-row">
             <?php echo $this->Html->link("Cambiar Contraseña", 
                     array(
                         'controller' => 'users', 
                         'action' => 'cambioc', 
                         $this->Session->read('Auth.User.id')
                     ),
-                    array('class' => 'uk-button uk-button-link')
+                    array('class' => 'uk-button uk-button-danger')
                 ); 
             ?>
         </div>

@@ -130,8 +130,7 @@ class UsersController extends AppController {
             if ($this->Auth->login()) {
                 $this->Session->write('user', $this->request->data['User']['username']);
                 $this->redirect(array('controller' => 'documentos', 'action' => 'index'));
-            } 
-            else{
+            } else {
                 $this->Session->setFlash('Nombre de usuario y/o password incorrectos, por favor intente de nuevo');
             }
         }
@@ -233,27 +232,37 @@ class UsersController extends AppController {
     //FUNCI�N SEARCH CON EL AUTOCOMPLETE
 
     function index() {
-
-
         if ($this->RequestHandler->isAjax()) {
-
             Configure::write('debug', 0);
             $this->autoRender = false;
-            $users = $this->User->find('all', array('conditions' =>
-                array('$or' => array(
-                        array("username" => array('$regex' => new MongoRegex('/.*' . $_GET['term'] . '*./'))),
-                        array("nombre" => array('$regex' => new MongoRegex('/.*' . $_GET['term'] . '*./'))),
-                        array("email" => array('$regex' => new MongoRegex('/.*' . $_GET['term'] . '*./')))
-            ))));
-
-
-
+            $users = $this->User->find('all', array(
+                'conditions' => array(
+                    '$or' => array(
+                        array(
+                            "username" => array(
+                                '$regex' => new MongoRegex('/.*' . $_GET['term'] . '*./')
+                                )
+                            ),
+                        array(
+                            "nombre" => array(
+                                '$regex' => new MongoRegex('/.*' . $_GET['term'] . '*./')
+                                )
+                            ),
+                        array(
+                            "email" => array(
+                                '$regex' => new MongoRegex('/.*' . $_GET['term'] . '*./')
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+            var_dump($users);
             $i = 0;
             $response[$i]['value'] = $_GET['term'];
             $response[$i]['label'] = "No se encontraron resultados";
 
             foreach ($users as $user) {
-
                 if (!empty($user['User']['imagen']))
                     $htmlImagen = "<td width='32px' valign='middle' heigth='0px'>
 							<img width=\"32\" height=\"32\" src='/observatorio/files/usrpic/" . $user['User']['imagen'] . "'/></td>";
@@ -316,11 +325,11 @@ class UsersController extends AppController {
             $temporal = $this->request->data['User']['username'];
 
             $result = $this->User->find('first', array('conditions' => array('User.username' => $temporal)));
-            if(!$result){
+            if (!$result) {
                 $this->Session->setFlash("Usuario no encontrado");
                 return false;
             }
-            
+
             $emailTo = $result['User']['email'];
             $newpss = rand(100000, 999999);
             $result['User']['password'] = $this->Auth->password($newpss);
@@ -332,40 +341,41 @@ class UsersController extends AppController {
                 $email->config('smtp');
                 $email->from(array('observatorio@udi.edu.co' => 'Observatorio'));
                 $email->to($emailTo);
-                $email->subject("Restauraci�n de contrase�a");
-                $texto = "Esto es un mensaje generado autom�ticamente por el observatorio de aplicaciones<br><br>";
-                $texto = $texto . "Su contrase�a actual es: " . $newpss;
+                $email->subject("Restauración de contraseña");
+                $texto = "Esto es un mensaje generado automáticamente por el "
+                        . "observatorio de aplicaciones<br><br>";
+                $texto = $texto . "Su contraseña actual es: " . $newpss;
                 $email->sendAs = 'html';
                 $email->emailFormat('html');
                 $email->send($texto);
                 //$this->redirect('../../observatorio');
 
-                $this->Session->setFlash(__('Se ha enviado un correo a su cuenta de correo con la '
-                        . 'contraseña', true));
+                $this->Session->setFlash(__('Se ha enviado un correo a su cuenta de '
+                                . 'correo con la contrase&nacute;a', true));
             }
         }
     }
-    
+
     public function addToFolder($id = null) {
-        
+
         $usuarios = $this->User->find('all');
         $formattedUsers = array();
-        foreach ($usuarios as $usuario){
-            if(isset($usuario['User']['username'])){
+        foreach ($usuarios as $usuario) {
+            if (isset($usuario['User']['username'])) {
                 $formattedUsers[$usuario['User']['username']] = $usuario['User']['nombre'];
             }
         }
         $this->set('usuarios', $formattedUsers);
         $this->set('cpadre', $id);
-        
+
         if ($this->request->is('post')) {
 //             var_dump($this->request->data['Usuario']);
 //             die();
             $id = $this->request->data['Usuario']['cpadre'];
             $this->Categoria->save(array('id' => $id, '$push' => array('usuarios' =>
-                array('id' => $this->request->data['Usuario']['id'],
-                    'username' => $this->request->data['Usuario']['usuario'],
-                ))));
+                    array('id' => $this->request->data['Usuario']['id'],
+                        'username' => $this->request->data['Usuario']['usuario'],
+            ))));
             $this->redirect(array('controller' => 'usuarios', 'action' => 'index', $id));
         }
     }
@@ -422,7 +432,7 @@ class UsersController extends AppController {
         } else
             return true;
     }
-    
+
     function logout() {
         $this->Session->delete('Auth');
         $this->Session->delete('user');
