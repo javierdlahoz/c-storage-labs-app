@@ -48,7 +48,7 @@ $opciones = array(
                                 'type' => 'select',
                                 'options' => $opciones,
                                 'div'           => 'uk-form-row',
-                                'class'         => 'uk-width-1-1 uk-form-large',
+                                'class'         => 'uk-width-1-1',
                                 'label'         => 'Nombre',
                                 'placeholder'   => 'Correo eectrónico'
                             )
@@ -58,7 +58,7 @@ $opciones = array(
                             array(
                                 'type' => $propiedad['tipo'], 
                                 'div'           => 'uk-form-row',
-                                'class'         => 'uk-width-1-1 uk-form-large',
+                                'class'         => 'uk-width-1-1',
                                 'required'      => true,
                                 'label'         => 'Nombre',
                                 'placeholder'   => 'Correo eectrónico'
@@ -73,7 +73,7 @@ $opciones = array(
                 Arrastra un archivo o haz clic aquí
             </div>
             <input type="file" name="data[Documento][archivo]" id="DocumentoArchivo"
-                   class="uk-width-1-1 uk-form-large">
+                   class="uk-width-1-1">
        	<?php //echo $this->Form->input('archivo', array('type' => 'file')); ?>
         </div>
         <div id="nombreArchivo" style="display:none"></div>
@@ -83,7 +83,7 @@ $opciones = array(
                     'type' => 'textarea', 
                     'label' => 'Comentarios/Instrucciones',
                     'div'           => 'uk-form-row',
-                    'class'         => 'uk-width-1-1 uk-form-large',
+                    'class'         => 'uk-width-1-1',
                     'required'      => true,
                     'placeholder'   => 'Comentarios'
                 )
@@ -93,7 +93,7 @@ $opciones = array(
                     'type'  => 'hidden', 
                     'value' => $id_cat,
                     'div'   => 'uk-form-row',
-                    'class' => 'uk-width-1-1 uk-form-large',
+                    'class' => 'uk-width-1-1',
                     'label' => false,
                 )
         );
@@ -115,7 +115,7 @@ $opciones = array(
             <?php echo $this->Form->button('Subir Archivo', 
                 array(
                     'type'  => 'submit',
-                    'class' => 'uk-width-1-5 uk-button uk-button-primary'
+                    'class' => 'uk-button uk-button-primary'
                     )
                 );
             ?>
