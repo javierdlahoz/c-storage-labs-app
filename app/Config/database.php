@@ -67,7 +67,7 @@ class DATABASE_CONFIG {
 		'port' => '27017',
 		'login' => '',
 		'password' => '',
-		'database' => 'labs',
+		'database' => 'labs2',
 		//'prefix' => '',
 		'encoding' => 'utf8',
 	);

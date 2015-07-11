@@ -1,0 +1,13 @@
+users/
+Ir a la izquierda
+Crear Nuevo => Verde y plus, 
+Mostrar todo al final
+
+Docuemntos
+Crear documentos
+mensajes de success en verde
+add en documentos mejorar los placeholder
+Buscar primero que en mostrar todo
+iconos de carpetas mas grandes
+
+Quitar Menu configuracion de correos
