@@ -286,7 +286,7 @@ class UsersController extends AppController {
                     )))));
             }
             else {
-                $this->set('users', $this->paginate());
+                $this->set('users', $this->User->find('all'));
             }
         }
     }

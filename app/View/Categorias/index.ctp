@@ -13,6 +13,7 @@
                 array('class'    => 'uk-button uk-button-primary') 
             ); 
         ?>
+        <?php if(!empty($categoria)): ?>
         <?php echo $this->Html->link('Propiedades', 
                 array(
                     'controller' => 'propiedades', 
@@ -31,6 +32,7 @@
                 array('class'    => 'uk-button')
             ); 
         ?>
+    <?php endif; ?>
     </div>
 </div>
 <div class="uk-width-medium-1-1" data-uk-grid-margin="">

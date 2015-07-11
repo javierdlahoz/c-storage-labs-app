@@ -70,71 +70,54 @@
                     <th>Nombre de Usuario</th>
                     <th>Organización</th>
                     <th>Correo Electrónico</th>
-                    <th class="uk-text-center">Borrar</th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($users as $user): ?>
-                <tr>
-                    <td>
-                        <?php echo $this->Html->link($user['User']['nombre'],
-                                array(
-                                    'controller' => 'users', 
-                                    'action' => 'edit', 
-                                    $user['User']['id']
-                                )
-                            ); 
-                        ?>
-                    </td>
-                    <td>
-                        <?php echo $this->Html->link($user['User']['username'], 
-                                array(
-                                    'controller' => 'users', 
-                                    'action' => 'edit', 
-                                    $user['User']['id']
-                                )
-                            ); 
-                        ?>
-                    </td>
-                    <td>
-                        <?php echo $this->Html->link($user['User']['organizacion'], 
-                                array(
-                                    'controller' => 'users', 
-                                    'action' => 'edit', 
-                                    $user['User']['id']
-                                )
-                            ); 
-                        ?>
-                    </td>
-                    <td>
-                        <?php echo $this->Html->link($user['User']['email'], 
-                                array(
-                                    'controller' => 'users', 
-                                    'action' => 'edit', 
-                                    $user['User']['id']
-                                )
-                            );
-                        ?>
-                    </td>
-                    <td class="uk-text-center">
-                        <?php 
-                            if($this->Session->read('Auth.User.id') != $user['User']['id']){
-                                echo $this->Html->link('', 
-                                    array(
-                                        'controller' => 'users', 
-                                        'action' => 'delete', 
-                                        $user['User']['id']
-                                    ),
-                                    array(
-                                        'escape' => false,
-                                        'class'  => 'uk-icon-button uk-icon-trash'
-                                    ), 
-                                    "¿Desea continuar?"
-                                );
-                            }
-                        ?>
-                    </td>
-                </tr>
+                    <?php if(!empty($user['User']['nombre'])): ?>
+                        <tr>
+                            <td>
+                                <?php echo $this->Html->link($user['User']['nombre'],
+                                        array(
+                                            'controller' => 'users', 
+                                            'action' => 'edit', 
+                                            $user['User']['id']
+                                        )
+                                    ); 
+                                ?>
+                            </td>
+                            <td>
+                                <?php echo $this->Html->link($user['User']['username'], 
+                                        array(
+                                            'controller' => 'users', 
+                                            'action' => 'edit', 
+                                            $user['User']['id']
+                                        )
+                                    ); 
+                                ?>
+                            </td>
+                            <td>
+                                <?php echo $this->Html->link($user['User']['organizacion'], 
+                                        array(
+                                            'controller' => 'users', 
+                                            'action' => 'edit', 
+                                            $user['User']['id']
+                                        )
+                                    ); 
+                                ?>
+                            </td>
+                            <td>
+                                <?php echo $this->Html->link($user['User']['email'], 
+                                        array(
+                                            'controller' => 'users', 
+                                            'action' => 'edit', 
+                                            $user['User']['id']
+                                        )
+                                    );
+                                ?>
+                            </td>
+                        </tr>
+                    <?php endif; ?>
                 <?php endforeach; ?>
             </tbody>
         </table>

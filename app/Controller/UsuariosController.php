@@ -59,13 +59,14 @@ class UsuariosController extends AppController {
         }
 
         $categorias = $this->Categoria->find('first', array('conditions' => array('id' => $id)));
-        foreach ($categorias as $categoria) {
-            $nombre = $categoria['nombre'];
+        if(!empty($categorias)){
+            foreach ($categorias as $categoria) {
+                $nombre = $categoria['nombre'];
+                $this->set('ncategoria', $nombre);
+            }
         }
         $this->set('id', $id);
-        $this->set('ncategoria', $nombre);
         $this->set('categorias', $categorias);
-        //$this->set('propiedades', $this->Propiedade->find('all', array('conditions' => array('cpadre'=>$id))));
     }
 
     public function delete($id = null) {
