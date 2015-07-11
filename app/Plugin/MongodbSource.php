@@ -97,7 +97,7 @@ class MongodbSource extends DboSource {
 		'set_string_id' => true,
 		'persistent' => true,
 		'host'       => 'localhost',
-		'database'   => '',
+		'database'   => 'labs',
 		'port'       => '27017',
 		'login'		=> '',
 		'password'	=> '',
