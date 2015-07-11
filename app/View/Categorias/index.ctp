@@ -93,7 +93,7 @@
             <?php endforeach; ?>
         </tbody>
     </table>
-    <?php else: ?>
+    <?php elseif(!empty($categoria)): ?>
     <p>
         Aún no se han agregado ningún recurso, puede cargar uno 
         <?php echo $this->Html->link('aquí', 
