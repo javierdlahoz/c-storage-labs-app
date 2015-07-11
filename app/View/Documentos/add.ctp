@@ -69,11 +69,14 @@ $opciones = array(
 	}
         ?>
         <div class="uk-form-row file-wrapper" id='file-wrapper'>
-            <div class="file_sign uk-block uk-block-default uk-block-mini" id='file_sign'>
-                Arrastra un archivo o haz clic aquí
+            <div class="file_sign uk-block uk-block-default uk-block-mini" id='file_sign' style="position: relative">
+                <span id="upload-placeholder" class="upload-text">Arrastra un archivo o haz clic aquí</span>
+                <input type="file" name="data[Documento][archivo]" id="DocumentoArchivo"
+                   class="uk-width-1-1 upload-input">
+                <span id="upload-file" class="upload-text"></span>
+
             </div>
-            <input type="file" name="data[Documento][archivo]" id="DocumentoArchivo"
-                   class="uk-width-1-1">
+            
        	<?php //echo $this->Form->input('archivo', array('type' => 'file')); ?>
         </div>
         <div id="nombreArchivo" style="display:none"></div>

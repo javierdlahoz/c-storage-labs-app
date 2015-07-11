@@ -79,30 +79,32 @@
                 </div>
                 <?php echo $this->Form->end();  ?>
             </div>
-            <div class="uk-panel uk-panel-box uk-panel-box-primary">
-                <div class="uk-button-group">
-                    <?php echo $this->Html->link('<i class="uk-icon uk-hover uk-icon-plus"></i> Cargar Documento',
-                            array(
-                                'controller' => 'documentos', 
-                                'action'     => 'add',
-                                $id_cat
-                            ),
-                            array(
-                                'escape'    => false,
-                                'class'     => 'uk-button uk-button-danger'
-                            )
-                        ); 
-                    ?>
-                    <?php echo $this->Html->link('Asociar nuevo documento', 
-                            array(
-                                'controller' => 'documentos', 
-                                'action'     => 'add', 
-                                $id_cat
-                            ),
-                            array('class' => 'uk-button uk-button-default')
-                    ); ?>
+            <?php if(!empty($cpadres)): ?>
+                <div class="uk-panel uk-panel-box uk-panel-box-primary">
+                    <div class="uk-button-group">
+                        <?php echo $this->Html->link('<i class="uk-icon uk-hover uk-icon-plus"></i> Cargar Documento',
+                                array(
+                                    'controller' => 'documentos', 
+                                    'action'     => 'add',
+                                    $id_cat
+                                ),
+                                array(
+                                    'escape'    => false,
+                                    'class'     => 'uk-button uk-button-danger'
+                                )
+                            ); 
+                        ?>
+                        <?php echo $this->Html->link('Asociar nuevo documento', 
+                                array(
+                                    'controller' => 'documentos', 
+                                    'action'     => 'add', 
+                                    $id_cat
+                                ),
+                                array('class' => 'uk-button uk-button-default')
+                        ); ?>
+                    </div>
                 </div>
-            </div>
+            <?php endif; ?>
             <div class="uk-panel uk-panel-box uk-panel-box-primary">
                 Ruta: <?php echo $this->Html->link('Root', 
                         array(

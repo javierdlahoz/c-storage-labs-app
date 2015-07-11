@@ -30,6 +30,7 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 	<?php
         echo $this->Html->meta('icon');
         echo $this->Html->css('uikit.gradient.min.css');
+        echo $this->Html->css('main.css');
         //echo $this->Html->css('https://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css');
 
         echo $this->fetch('meta');
@@ -206,5 +207,6 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
         <?php echo $this->Html->script('jquery-1.11.2.min'); ?>
 	<?php //echo $this->Html->script('https://code.jquery.com/ui/1.11.2/jquery-ui.min.js');?>
         <?php echo $this->Html->script('uikit.min'); ?>
+        <?php echo $this->Html->script('main'); ?>
     </body>
 </html>
